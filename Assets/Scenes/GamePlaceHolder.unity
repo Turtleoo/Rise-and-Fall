@@ -2897,7 +2897,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3679202452634967840, guid: 4ab653caa9664734d8dc615f5871c6ed, type: 3}
       propertyPath: m_SortingLayer
-      value: 2
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 3679202452634967840, guid: 4ab653caa9664734d8dc615f5871c6ed, type: 3}
       propertyPath: m_SortingLayerID
@@ -3362,8 +3362,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f4fce875f2f00214b83c14d9bb12e2a5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  animator: {fileID: 2012663612}
   moveSpeed: 5
   jumpForce: 10
+--- !u!95 &2012663612 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 3679202452634967841, guid: 4ab653caa9664734d8dc615f5871c6ed, type: 3}
+  m_PrefabInstance: {fileID: 1505571842}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &2052472939
 GameObject:
   m_ObjectHideFlags: 0
