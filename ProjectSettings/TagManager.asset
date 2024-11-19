@@ -3,7 +3,8 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 3
-  tags: []
+  tags:
+  - Ground
   layers:
   - Default
   - TransparentFX
@@ -43,6 +44,9 @@ TagManager:
     locked: 0
   - name: Background
     uniqueID: 1635884497
+    locked: 0
+  - name: Details
+    uniqueID: 2371079921
     locked: 0
   - name: Midground
     uniqueID: 489853223
