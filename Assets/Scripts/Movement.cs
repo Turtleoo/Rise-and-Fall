@@ -1,16 +1,19 @@
-using System.Collections;
-using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
-public class Player : MonoBehaviour
+public class Movement : MonoBehaviour
 {
-    private float movement;
-    public float moveSpeed = 5f;
-    public float jumpForce = 10f; // How high the player jumps
-    private bool isGrounded; // Check if the player is on the ground
-    private Rigidbody2D rb; // Rigidbody2D for physics-based movement
+    public float moveSpeed = 5f; // Speed for horizontal movement
+    public float jumpForce = 1f; // Force applied for jumping
+    private bool canJump = false; // Initially, the player cannot jump
+    private bool canDoubleJump = false; // Can the player double jump?
+    private bool hasDoubleJumped = false; // Has the double jump been used?
+    private bool canTripleJump = false; // Can the player triple jump?
+    private bool hasTripleJumped = false; // Has the triple jump been used?
+    private bool tripleJumpAvailable = false; // Is triple jump power-up active?
+    private Rigidbody2D rb; // Reference to Rigidbody2D
+    private bool isGrounded; // Is the player on the ground?
 
-    // Start is called before the first frame update
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
@@ -18,37 +21,74 @@ public class Player : MonoBehaviour
 
     void Update()
     {
-        // Get horizontal movement input
-        movement = Input.GetAxis("Horizontal");
+        // Handle horizontal movement
+        float moveInput = Input.GetAxis("Horizontal");
+        rb.linearVelocity = new Vector2(moveInput * moveSpeed, rb.linearVelocity.y);
 
-        // Jump when on the ground and the Jump button is pressed
-        if (Input.GetButtonDown("Jump") && isGrounded)
+        // Jump logic (only if jumping is unlocked)
+        if (canJump && Input.GetButtonDown("Jump"))
         {
-            rb.linearVelocity = new Vector2(rb.linearVelocity.x, jumpForce);
-            isGrounded = false; // Set to false until grounded again
+            if (isGrounded)
+            {
+                Jump(); // Normal jump
+                hasDoubleJumped = false; // Reset double jump
+                hasTripleJumped = false; // Reset triple jump
+            }
+            else if (canTripleJump && tripleJumpAvailable && !hasTripleJumped)
+            {
+                TripleJump(); // Perform triple jump
+            }
+            else if (canDoubleJump && !hasDoubleJumped)
+            {
+                DoubleJump(); // Perform double jump
+            }
         }
     }
 
-    private void FixedUpdate()
+    void Jump()
     {
-        if (movement != 0)
-        {
-            // Move the player horizontally
-            rb.linearVelocity = new Vector2(movement * moveSpeed, rb.linearVelocity.y);
-        }
-        else
-        {
-            // Stop horizontal movement when no input is given
-            rb.linearVelocity = new Vector2(0, rb.linearVelocity.y);
-        }
+        rb.linearVelocity = new Vector2(rb.linearVelocity.x, jumpForce);
+        isGrounded = false; // Set to false after jumping
     }
 
-    private void OnCollisionEnter2D(Collision2D collision)
+    void DoubleJump()
     {
-        // Check if the player is touching the ground
-        if (collision.collider.CompareTag("Ground"))
+        rb.linearVelocity = new Vector2(rb.linearVelocity.x, jumpForce * 1.2f);
+        hasDoubleJumped = true;
+    }
+
+    void TripleJump()
+    {
+        rb.linearVelocity = new Vector2(rb.linearVelocity.x, jumpForce * 1.5f);
+        hasTripleJumped = true;
+        tripleJumpAvailable = false; // Expend the triple jump power-up
+        Debug.Log("Triple jump performed!");
+    }
+
+    void OnCollisionStay2D(Collision2D collision)
+    {
+        if (collision.contacts.Any(contact => contact.normal.y > 0.5f))
         {
             isGrounded = true;
+            hasDoubleJumped = false; // Reset when grounded
+            hasTripleJumped = false; // Reset when grounded
         }
+    }
+
+    public void UnlockJump()
+    {
+        canJump = true;
+        isGrounded = true;
+    }
+
+    public void EnableDoubleJump()
+    {
+        canDoubleJump = true; // Unlock double jump
+    }
+
+    public void EnableTripleJump()
+    {
+        canTripleJump = true;       // Allow triple jump
+        tripleJumpAvailable = true; // Triple jump power-up is active
     }
 }
