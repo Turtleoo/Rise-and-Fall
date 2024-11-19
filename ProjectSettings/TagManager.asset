@@ -52,5 +52,8 @@ TagManager:
   - name: Midground
     uniqueID: 489853223
     locked: 0
+  - name: ForwardGround
+    uniqueID: 120799903
+    locked: 0
   m_RenderingLayers:
   - Default
