@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class Movement : MonoBehaviour
 {
-    Animator animator;
+    Animator animator; // Reference to Animator component
     public float moveSpeed = 5f; // Speed for horizontal movement
     public float jumpForce = 10f; // Force applied for jumping
     private bool canJump = false; // Initially, the player cannot jump
@@ -14,17 +14,24 @@ public class Movement : MonoBehaviour
     private bool tripleJumpAvailable = false; // Is triple jump power-up active?
     private Rigidbody2D rb; // Reference to Rigidbody2D
     private bool isGrounded; // Is the player on the ground?
+    private bool isFacingRight = true; // Tracks the player's facing direction
+    private Vector2 platformVelocity; // Tracks platform velocity for moving platforms
 
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
+        animator = GetComponent<Animator>(); // Assign the Animator component
     }
 
     void Update()
     {
         // Handle horizontal movement
         float moveInput = Input.GetAxis("Horizontal");
-        rb.linearVelocity = new Vector2(moveInput * moveSpeed, rb.linearVelocity.y);
+        Vector2 adjustedVelocity = new Vector2(moveInput * moveSpeed, rb.linearVelocity.y) + platformVelocity;
+        rb.linearVelocity = adjustedVelocity;
+
+        // Update horizontal movement animations
+        UpdateMovementAnimations(moveInput);
 
         // Jump logic (only if jumping is unlocked)
         if (canJump && Input.GetButtonDown("Jump"))
@@ -44,18 +51,27 @@ public class Movement : MonoBehaviour
                 DoubleJump(); // Perform double jump
             }
         }
+
+        // Set animator vertical speed parameter
+        animator.SetFloat("VerticalSpeed", rb.linearVelocity.y);
     }
 
     void Jump()
     {
-        rb.linearVelocity = new Vector2(rb.linearVelocity.x, jumpForce);
-        isGrounded = false; // Set to false after jumping
+        if (isGrounded)
+        {
+            rb.linearVelocity = new Vector2(rb.linearVelocity.x, jumpForce); // Apply jump force
+            animator.SetBool("IsJump", true); // Trigger jump animation
+            isGrounded = false; // Set grounded to false
+        }
     }
 
     void DoubleJump()
     {
         rb.linearVelocity = new Vector2(rb.linearVelocity.x, jumpForce * 1.2f);
         hasDoubleJumped = true;
+        animator.SetBool("IsJump", true); // Keep jump animation active
+        isGrounded = false; // Set grounded to false
     }
 
     void TripleJump()
@@ -63,23 +79,73 @@ public class Movement : MonoBehaviour
         rb.linearVelocity = new Vector2(rb.linearVelocity.x, jumpForce * 1.5f);
         hasTripleJumped = true;
         tripleJumpAvailable = false; // Expend the triple jump power-up
-        Debug.Log("Triple jump performed!");
+        animator.SetBool("IsJump", true); // Keep jump animation active
+        isGrounded = false; // Set grounded to false
     }
 
     void OnCollisionStay2D(Collision2D collision)
     {
         if (collision.contacts.Any(contact => contact.normal.y > 0.5f))
         {
-            isGrounded = true;
-            hasDoubleJumped = false; // Reset when grounded
-            hasTripleJumped = false; // Reset when grounded
+            if (!isGrounded) // Ensure state transitions correctly
+            {
+                isGrounded = true;
+                animator.SetBool("IsJump", false); // Stop jump animation when grounded
+                hasDoubleJumped = false; // Reset double jump
+                hasTripleJumped = false; // Reset triple jump
+            }
+
+            // Check if the player is standing on a moving platform
+            OscillatePlatform platform = collision.collider.GetComponentInParent<OscillatePlatform>();
+            if (platform != null)
+            {
+                platformVelocity = platform.GetPlatformVelocity();
+                return;
+            }
         }
+
+        // If not on a platform, reset platform velocity
+        platformVelocity = Vector2.zero;
+    }
+
+    void OnCollisionExit2D(Collision2D collision)
+    {
+        // Reset platform velocity when leaving any collision
+        if (collision.collider.GetComponentInParent<OscillatePlatform>() != null)
+        {
+            platformVelocity = Vector2.zero;
+        }
+    }
+
+    void UpdateMovementAnimations(float moveInput)
+    {
+        // Update speed parameter for running animation
+        animator.SetFloat("speed", Mathf.Abs(moveInput * moveSpeed));
+
+        // Handle turning
+        if (moveInput > 0 && !isFacingRight)
+        {
+            Flip();
+        }
+        else if (moveInput < 0 && isFacingRight)
+        {
+            Flip();
+        }
+    }
+
+    void Flip()
+    {
+        // Flip the character's facing direction
+        isFacingRight = !isFacingRight;
+        Vector3 localScale = transform.localScale;
+        localScale.x *= -1; // Flip the character
+        transform.localScale = localScale;
     }
 
     public void UnlockJump()
     {
-        canJump = true;
-        isGrounded = true;
+        canJump = true; // Unlock jumping
+        isGrounded = true; // Assume grounded initially
     }
 
     public void EnableDoubleJump()
@@ -90,6 +156,6 @@ public class Movement : MonoBehaviour
     public void EnableTripleJump()
     {
         canTripleJump = true;       // Allow triple jump
-        tripleJumpAvailable = true; // Triple jump power-up is active
+        tripleJumpAvailable = true; // Enable triple jump power-up
     }
 }
