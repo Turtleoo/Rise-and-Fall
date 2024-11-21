@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class Spike : MonoBehaviour
+public class DmgTrigger: MonoBehaviour
 {
     void OnTriggerEnter2D(Collider2D other)
     {

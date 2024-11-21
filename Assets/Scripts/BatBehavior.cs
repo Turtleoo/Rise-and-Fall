@@ -12,8 +12,6 @@ public class BatBehavior: MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            Debug.Log("Player has entered the trigger.");
-
             // Set the player's transform for flight direction
             playerTransform = other.transform;
 

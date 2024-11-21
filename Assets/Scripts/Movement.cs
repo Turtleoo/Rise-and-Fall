@@ -17,6 +17,10 @@ public class Movement : MonoBehaviour
     private bool isFacingRight = true; // Tracks the player's facing direction
     private Vector2 platformVelocity; // Tracks platform velocity for moving platforms
 
+    private bool isOnLadder = false; // Is the player on a ladder?
+    private float ladderSpeed = 4f; // Speed for ladder movement
+    private Collider2D currentLadder; // Reference to the ladder the player is on
+
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
@@ -25,22 +29,37 @@ public class Movement : MonoBehaviour
 
     void Update()
     {
-        // Handle horizontal movement
+        // Handle movement
         float moveInput = Input.GetAxis("Horizontal");
-        Vector2 adjustedVelocity = new Vector2(moveInput * moveSpeed, rb.linearVelocity.y) + platformVelocity;
-        rb.linearVelocity = adjustedVelocity;
+        if (!isOnLadder) // Normal ground movement
+        {
+            Vector2 adjustedVelocity = new Vector2(moveInput * moveSpeed, rb.linearVelocity.y) + platformVelocity;
+            rb.linearVelocity = adjustedVelocity;
 
-        // Update horizontal movement animations
-        UpdateMovementAnimations(moveInput);
+            // Update horizontal movement animations
+            UpdateMovementAnimations(moveInput);
+        }
+        else // Ladder movement
+        {
+            HandleLadderMovement();
+        }
 
-        // Jump logic (only if jumping is unlocked)
+        // Jump logic
         if (canJump && Input.GetButtonDown("Jump"))
         {
-            if (isGrounded)
+            if (isGrounded || isOnLadder) // Allow jumping on ground or ladder
             {
-                Jump(); // Normal jump
+                Jump(); // Perform jump
                 hasDoubleJumped = false; // Reset double jump
                 hasTripleJumped = false; // Reset triple jump
+
+                // Detach from ladder if jumping off
+                if (isOnLadder)
+                {
+                    isOnLadder = false;
+                    currentLadder = null;
+                    rb.gravityScale = 1; // Restore gravity
+                }
             }
             else if (canTripleJump && tripleJumpAvailable && !hasTripleJumped)
             {
@@ -56,14 +75,24 @@ public class Movement : MonoBehaviour
         animator.SetFloat("VerticalSpeed", rb.linearVelocity.y);
     }
 
+    void HandleLadderMovement()
+    {
+        float verticalInput = Input.GetAxis("Vertical"); // W/S for climbing
+        float horizontalInput = Input.GetAxis("Horizontal"); // A/D for side-to-side movement
+
+        // Combine horizontal and vertical ladder movement
+        rb.linearVelocity = new Vector2(horizontalInput * moveSpeed, verticalInput * ladderSpeed);
+
+        // Update animations
+        animator.SetFloat("speed", Mathf.Abs(horizontalInput * moveSpeed)); // Horizontal movement animation
+        animator.SetBool("IsClimbing", Mathf.Abs(verticalInput) > 0.1f); // Climbing animation
+    }
+
     void Jump()
     {
-        if (isGrounded)
-        {
-            rb.linearVelocity = new Vector2(rb.linearVelocity.x, jumpForce); // Apply jump force
-            animator.SetBool("IsJump", true); // Trigger jump animation
-            isGrounded = false; // Set grounded to false
-        }
+        rb.linearVelocity = new Vector2(rb.linearVelocity.x, jumpForce); // Apply jump force
+        animator.SetBool("IsJump", true); // Trigger jump animation
+        isGrounded = false; // Set grounded to false
     }
 
     void DoubleJump()
@@ -157,5 +186,31 @@ public class Movement : MonoBehaviour
     {
         canTripleJump = true;       // Allow triple jump
         tripleJumpAvailable = true; // Enable triple jump power-up
+    }
+
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        if (other.CompareTag("Ladder"))
+        {
+            isOnLadder = true;
+            currentLadder = other; // Keep track of the ladder
+            rb.gravityScale = 0; // Disable gravity while on the ladder
+            rb.linearVelocity = Vector2.zero; // Reset velocity
+
+            // Reset jump states
+            isGrounded = true;
+            hasDoubleJumped = false;
+            hasTripleJumped = false;
+        }
+    }
+
+    private void OnTriggerExit2D(Collider2D other)
+    {
+        if (other.CompareTag("Ladder") && other == currentLadder)
+        {
+            isOnLadder = false;
+            currentLadder = null;
+            rb.gravityScale = 1; // Restore gravity
+        }
     }
 }
