@@ -6,6 +6,7 @@ public class ChestInteraction : MonoBehaviour
     public GameObject prompt; // UI element to display "Press E"
     public GameObject winMessage; // UI element to display "You Win!"
     public Movement playerMovement; // Reference to the Movement script
+    public Animator barrelAnimator; // Reference to the barrel's Animator component
     private bool playerInRange = false;
 
     void Start()
@@ -20,6 +21,7 @@ public class ChestInteraction : MonoBehaviour
             winMessage.SetActive(false); // Ensure the win message is hidden initially
         }
     }
+
     void OnTriggerEnter2D(Collider2D other)
     {
         if (other.CompareTag("Player"))
@@ -67,6 +69,13 @@ public class ChestInteraction : MonoBehaviour
             {
                 playerMovement.UnlockJump(); // Unlock the ability to jump
             }
+
+            // Trigger the barrel's animation
+            if (barrelAnimator != null)
+            {
+                barrelAnimator.SetTrigger("PlayBarrelAnimation");
+            }
+
             Destroy(gameObject);
         }
     }
