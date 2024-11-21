@@ -5,7 +5,7 @@ using UnityEngine.EventSystems;
 
 public class Health : MonoBehaviour
 {
-    public int maxHealth = 3; // Total health points
+    public int maxHealth = 300000000; // Total health points
     private int currentHealth; // Current health points
 
     private bool isInvulnerable = false;
