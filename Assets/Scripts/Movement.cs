@@ -6,9 +6,6 @@ public class Movement : MonoBehaviour
     Animator animator; // Reference to Animator component
     public float moveSpeed = 5f; // Speed for horizontal movement
     public float jumpForce = 10f; // Force applied for jumping
-    public Transform groundCheck; // Reference to Ground Check object
-    public float groundCheckRadius = 0.1f; // Radius for ground detection
-    public LayerMask groundLayer; // Layer mask for ground detection
     private bool canJump = false; // Initially, the player cannot jump
     private bool canDoubleJump = false; // Can the player double jump?
     private bool hasDoubleJumped = false; // Has the double jump been used?
@@ -36,10 +33,10 @@ public class Movement : MonoBehaviour
         // Update horizontal movement animations
         UpdateMovementAnimations(moveInput);
 
-        // Jump logic
+        // Jump logic (only if jumping is unlocked)
         if (canJump && Input.GetButtonDown("Jump"))
         {
-            if (IsGrounded())
+            if (isGrounded)
             {
                 Jump(); // Normal jump
                 hasDoubleJumped = false; // Reset double jump
@@ -55,21 +52,18 @@ public class Movement : MonoBehaviour
             }
         }
 
-        // Update animator with vertical speed
+        // Set animator vertical speed parameter
         animator.SetFloat("VerticalSpeed", rb.linearVelocity.y);
-    }
-
-    private bool IsGrounded()
-    {
-        // Check if the groundCheck overlaps with any ground objects
-        return Physics2D.OverlapCircle(groundCheck.position, groundCheckRadius, groundLayer);
     }
 
     void Jump()
     {
-        rb.linearVelocity = new Vector2(rb.linearVelocity.x, jumpForce); // Apply jump force
-        animator.SetBool("IsJump", true); // Trigger jump animation
-        isGrounded = false; // Set grounded to false
+        if (isGrounded)
+        {
+            rb.linearVelocity = new Vector2(rb.linearVelocity.x, jumpForce); // Apply jump force
+            animator.SetBool("IsJump", true); // Trigger jump animation
+            isGrounded = false; // Set grounded to false
+        }
     }
 
     void DoubleJump()
@@ -77,6 +71,7 @@ public class Movement : MonoBehaviour
         rb.linearVelocity = new Vector2(rb.linearVelocity.x, jumpForce * 1.2f);
         hasDoubleJumped = true;
         animator.SetBool("IsJump", true); // Keep jump animation active
+        isGrounded = false; // Set grounded to false
     }
 
     void TripleJump()
@@ -85,6 +80,7 @@ public class Movement : MonoBehaviour
         hasTripleJumped = true;
         tripleJumpAvailable = false; // Expend the triple jump power-up
         animator.SetBool("IsJump", true); // Keep jump animation active
+        isGrounded = false; // Set grounded to false
     }
 
     void OnCollisionStay2D(Collision2D collision)
@@ -149,6 +145,7 @@ public class Movement : MonoBehaviour
     public void UnlockJump()
     {
         canJump = true; // Unlock jumping
+        isGrounded = true; // Assume grounded initially
     }
 
     public void EnableDoubleJump()
