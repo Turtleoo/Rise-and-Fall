@@ -129,7 +129,7 @@ GameObject:
   m_Component:
   - component: {fileID: 28595059}
   - component: {fileID: 28595060}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: house_3 (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -421,7 +421,7 @@ GameObject:
   m_Component:
   - component: {fileID: 51911590}
   - component: {fileID: 51911591}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: house_inside_2 (6)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -508,7 +508,7 @@ GameObject:
   m_Component:
   - component: {fileID: 55408089}
   - component: {fileID: 55408090}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: house_inside_4
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -682,7 +682,7 @@ GameObject:
   m_Component:
   - component: {fileID: 59436853}
   - component: {fileID: 59436854}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: house_inside_2 (9)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -769,7 +769,7 @@ GameObject:
   m_Component:
   - component: {fileID: 60209721}
   - component: {fileID: 60209722}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: house_inside_2 (11)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1118,7 +1118,7 @@ GameObject:
   - component: {fileID: 68804858}
   - component: {fileID: 68804857}
   - component: {fileID: 68804859}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: tower_inside_2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1433,7 +1433,7 @@ GameObject:
   m_Component:
   - component: {fileID: 99783020}
   - component: {fileID: 99783021}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: house_5 (3)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1520,7 +1520,7 @@ GameObject:
   m_Component:
   - component: {fileID: 124415303}
   - component: {fileID: 124415304}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: house_inside_1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1786,7 +1786,7 @@ GameObject:
   - component: {fileID: 190068922}
   - component: {fileID: 190068921}
   - component: {fileID: 190068923}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: tower_fence
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2006,7 +2006,7 @@ GameObject:
   m_Component:
   - component: {fileID: 223026973}
   - component: {fileID: 223026974}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: house_inside_2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2785,9 +2785,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 374021477}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: TOP
-  m_TagString: Untagged
+  m_TagString: Wall
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -3001,7 +3001,7 @@ GameObject:
   m_Component:
   - component: {fileID: 400984435}
   - component: {fileID: 400984436}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: house_inside_2 (15)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3088,7 +3088,7 @@ GameObject:
   m_Component:
   - component: {fileID: 436790090}
   - component: {fileID: 436790091}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: house_inside_2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3388,7 +3388,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 495325918}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: RIGHTSIDE
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3446,7 +3446,7 @@ GameObject:
   m_Component:
   - component: {fileID: 500203930}
   - component: {fileID: 500203931}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: house_inside_2 (3)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3744,7 +3744,7 @@ GameObject:
   m_Component:
   - component: {fileID: 538446417}
   - component: {fileID: 538446418}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: house_inside_2 (12)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3918,7 +3918,7 @@ GameObject:
   m_Component:
   - component: {fileID: 575187928}
   - component: {fileID: 575187929}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: house_3 (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4289,7 +4289,7 @@ GameObject:
   m_Component:
   - component: {fileID: 620601718}
   - component: {fileID: 620601719}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: house_inside_1 (4)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4418,7 +4418,7 @@ GameObject:
   m_Component:
   - component: {fileID: 645823845}
   - component: {fileID: 645823846}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: house_5 (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4593,7 +4593,7 @@ GameObject:
   - component: {fileID: 694115790}
   - component: {fileID: 694115789}
   - component: {fileID: 694115791}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: tower_fence (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5008,7 +5008,7 @@ GameObject:
   - component: {fileID: 757556438}
   - component: {fileID: 757556437}
   - component: {fileID: 757556439}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: shed_inside
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5402,7 +5402,7 @@ GameObject:
   m_Component:
   - component: {fileID: 827294392}
   - component: {fileID: 827294393}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: house_inside_4 (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5837,7 +5837,7 @@ GameObject:
   m_Component:
   - component: {fileID: 868580010}
   - component: {fileID: 868580011}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: house_4 (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -6342,7 +6342,7 @@ GameObject:
   m_Component:
   - component: {fileID: 902982601}
   - component: {fileID: 902982602}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: mill (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -62453,7 +62453,7 @@ GameObject:
   m_Component:
   - component: {fileID: 936973796}
   - component: {fileID: 936973797}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: house_inside_1 (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -62869,7 +62869,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1001948869}
   - component: {fileID: 1001948870}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: shed
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -63110,7 +63110,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1037700558}
   - component: {fileID: 1037700559}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: house_5 (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -63387,7 +63387,7 @@ GameObject:
   - component: {fileID: 1082199666}
   - component: {fileID: 1082199665}
   - component: {fileID: 1082199667}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: tower_fence (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -63656,7 +63656,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1109805328}
   - component: {fileID: 1109805329}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: house_inside_2 (16)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -63830,7 +63830,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1137644893}
   - component: {fileID: 1137644894}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: mill_blades (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -64091,7 +64091,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1186176856}
   - component: {fileID: 1186176857}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: house_inside_2 (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -64657,7 +64657,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1270011577}
   - component: {fileID: 1270011578}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: house_inside_2 (7)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -64831,7 +64831,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1323132464}
   - component: {fileID: 1323132465}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: house_4 (3)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -64918,7 +64918,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1324243873}
   - component: {fileID: 1324243874}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: house_inside_1 (3)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -65006,7 +65006,7 @@ GameObject:
   - component: {fileID: 1327921278}
   - component: {fileID: 1327921279}
   - component: {fileID: 1327921280}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: shed_inside
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -65249,7 +65249,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1332655688}
   - component: {fileID: 1332655689}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: house_inside_2 (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -65336,7 +65336,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1342139551}
   - component: {fileID: 1342139552}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: mill
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -65423,7 +65423,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1342594927}
   - component: {fileID: 1342594928}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: house_inside_2 (13)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -65700,7 +65700,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1406067669}
   - component: {fileID: 1406067670}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: house_inside_2 (17)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -65984,7 +65984,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1431046783}
   - component: {fileID: 1431046784}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: tower_inside_2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -66071,7 +66071,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1439764154}
   - component: {fileID: 1439764155}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: house_inside_4 (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -66158,7 +66158,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1467188355}
   - component: {fileID: 1467188356}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: house_3 (3)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -66709,7 +66709,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1521160115}
   - component: {fileID: 1521160116}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: house_inside_2 (8)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -66970,7 +66970,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1562022295}
   - component: {fileID: 1562022296}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: tower_inside_2 (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -67057,7 +67057,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1564597138}
   - component: {fileID: 1564597139}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: house_4
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -67144,7 +67144,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1606825374}
   - component: {fileID: 1606825375}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: mill_blades
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -67405,7 +67405,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1628778840}
   - component: {fileID: 1628778841}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: house_inside_2 (10)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -67492,7 +67492,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1642624841}
   - component: {fileID: 1642624842}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: house_inside_1 (6)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -67579,7 +67579,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1663053728}
   - component: {fileID: 1663053729}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: house_inside_4 (3)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -67755,7 +67755,7 @@ GameObject:
   - component: {fileID: 1689418038}
   - component: {fileID: 1689418037}
   - component: {fileID: 1689418040}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: EventSystem
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -67958,7 +67958,7 @@ GameObject:
   - component: {fileID: 1704795535}
   - component: {fileID: 1704795536}
   - component: {fileID: 1704795537}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: house_inside_1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -68229,7 +68229,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1715338532}
   - component: {fileID: 1715338533}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: house_5
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -68316,7 +68316,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1752681667}
   - component: {fileID: 1752681668}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: house_inside_1 (5)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -68577,7 +68577,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1777954707}
   - component: {fileID: 1777954708}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: shed (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -68751,7 +68751,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1792421330}
   - component: {fileID: 1792421331}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: house_inside_1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -69122,7 +69122,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1821744780}
   - component: {fileID: 1821744781}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: house_inside_2 (4)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -69296,7 +69296,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1846857422}
   - component: {fileID: 1846857423}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: house_inside_1 (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -69383,7 +69383,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1849809519}
   - component: {fileID: 1849809520}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: house_inside_2 (5)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -69470,7 +69470,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1874958040}
   - component: {fileID: 1874958041}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: house_inside_2 (18)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -69645,7 +69645,7 @@ GameObject:
   - component: {fileID: 1911591559}
   - component: {fileID: 1911591558}
   - component: {fileID: 1911591560}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: well
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -69986,7 +69986,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1953682040}
   - component: {fileID: 1953682041}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: house_inside_2 (14)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -70073,7 +70073,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1963196254}
   - component: {fileID: 1963196255}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: house_4 (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -70247,7 +70247,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1989997190}
   - component: {fileID: 1989997191}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: house_3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -70420,7 +70420,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2006716363}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: LEFTSIDE
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -71017,7 +71017,7 @@ GameObject:
   - component: {fileID: 2118514671}
   - component: {fileID: 2118514670}
   - component: {fileID: 2118514672}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: tower_inside
   m_TagString: Untagged
   m_Icon: {fileID: 0}
