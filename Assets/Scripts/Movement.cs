@@ -53,20 +53,30 @@ public class Movement : MonoBehaviour
             isGrounded = false;
         }
 
-        // Check if the player has landed
-        if (!isGrounded && rb.linearVelocity.y >= 0)
+        // Jump logic
+        if (canJump && Input.GetButtonDown("Jump"))
         {
-            isGrounded = true;
+            if (isGrounded || isOnLadder)
+            {
+                Jump();
+                hasDoubleJumped = false;
+                hasTripleJumped = false;
 
-            // Trigger landing animation
-            animator.SetBool("IsLanding", true);
-
-            // Stop gliding and fast-falling animations
-            animator.SetBool("IsFlying", false);
-            animator.SetBool("IsFastFalling", false);
-
-            // Reset landing animation after a brief delay (handled in Animator)
-            Invoke("ResetLandingAnimation", 0.1f);
+                if (isOnLadder)
+                {
+                    isOnLadder = false;
+                    currentLadder = null;
+                    rb.gravityScale = 1;
+                }
+            }
+            else if (canTripleJump && tripleJumpAvailable && !hasTripleJumped)
+            {
+                TripleJump();
+            }
+            else if (canDoubleJump && !hasDoubleJumped)
+            {
+                DoubleJump();
+            }
         }
 
         // Glide logic: Always active when falling and gliding is enabled
@@ -239,11 +249,6 @@ public class Movement : MonoBehaviour
         canGlide = false;
         animator.SetBool("IsFlying", false); // Ensure flying animation stops if gliding is disabled
         animator.SetBool("IsFastFalling", false); // Ensure fast-falling animation stops if gliding is disabled
-    }
-
-    void ResetLandingAnimation()
-    {
-        animator.SetBool("IsLanding", false);
     }
 
     private void OnTriggerEnter2D(Collider2D other)
