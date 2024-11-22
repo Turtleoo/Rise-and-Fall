@@ -58,14 +58,15 @@ public class Lever : MonoBehaviour
         }
     }
 
-    private void OnTriggerEnter2D(Collider2D other)
+
+    void OnTriggerEnter2D(Collider2D other)
     {
         if (other.CompareTag("Player"))
         {
             playerInRange = true;
             if (prompt != null)
             {
-                prompt.SetActive(true); // Show the prompt
+                prompt.SetActive(true);
             }
         }
     }
