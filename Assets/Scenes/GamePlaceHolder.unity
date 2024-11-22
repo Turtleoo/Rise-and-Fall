@@ -278,6 +278,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7753890}
   - component: {fileID: 7753889}
+  - component: {fileID: 7753891}
   m_Layer: 0
   m_Name: platform_2
   m_TagString: Untagged
@@ -348,13 +349,66 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7753888}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: -0.003, y: 0.509, z: 0}
   m_LocalScale: {x: 1.1252503, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 0}
+  m_Father: {fileID: 919789218}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!60 &7753891
+PolygonCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7753888}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_CompositeOperation: 0
+  m_CompositeOrder: 0
+  m_Offset: {x: 0, y: 0}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 3.93, y: 0.54}
+    newSize: {x: 3.93, y: 0.54}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  m_Points:
+    m_Paths:
+    - - {x: -1.9549999, y: -0.26999998}
+      - {x: 1.9649999, y: -0.26999998}
+      - {x: 1.9649999, y: 0.17}
+      - {x: 1.9549999, y: 0.26}
+      - {x: 1.9549999, y: 0.26999998}
+      - {x: -1.9549999, y: 0.26999998}
+  m_UseDelaunayMesh: 0
 --- !u!4 &9726020 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4567205370739424974, guid: b0b62ff69f067b841a9afae510b8dcf4, type: 3}
@@ -60744,6 +60798,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 488078621}
+  - {fileID: 7753890}
   m_Father: {fileID: 509146210}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!483693784 &919789219
@@ -69375,12 +69430,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   prompt: {fileID: 203177707}
-  gear: {fileID: 0}
-  gearRotationSpeed: 90
-  platform: {fileID: 0}
-  platformMoveSpeed: 5
-  moveDuration: 2
-  leverAnimator: {fileID: 0}
+  gear: {fileID: 846196477}
+  gearRotationSpeed: -180
+  platform: {fileID: 7753890}
+  platformMoveSpeed: 4
+  moveDuration: 1
+  leverAnimator: {fileID: 972275824}
 --- !u!61 &972275830
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -85953,7 +86008,6 @@ SceneRoots:
   - {fileID: 1628489214}
   - {fileID: 1391111727}
   - {fileID: 1737558827}
-  - {fileID: 7753890}
   - {fileID: 846196477}
   - {fileID: 22746019}
   - {fileID: 972275826}

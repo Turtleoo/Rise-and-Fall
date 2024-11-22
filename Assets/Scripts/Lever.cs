@@ -27,6 +27,11 @@ public class Lever : MonoBehaviour
         {
             prompt.SetActive(false); // Ensure the prompt is hidden initially
         }
+
+        if (leverAnimator == null)
+        {
+            Debug.LogError("leverAnimator is not assigned! Please assign it in the Inspector.");
+        }
     }
 
     private void Update()
@@ -59,7 +64,7 @@ public class Lever : MonoBehaviour
     }
 
 
-    void OnTriggerEnter2D(Collider2D other)
+    private void OnTriggerEnter2D(Collider2D other)
     {
         if (other.CompareTag("Player"))
         {
@@ -95,6 +100,11 @@ public class Lever : MonoBehaviour
         if (leverAnimator != null)
         {
             leverAnimator.SetBool("IsActive", isLeverActive);
+            Debug.Log($"SetBool called: IsActive = {isLeverActive}");
+        }
+        else
+        {
+            Debug.LogError("leverAnimator is not assigned.");
         }
 
         // Hide the prompt after interacting
