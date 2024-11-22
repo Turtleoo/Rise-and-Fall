@@ -68,6 +68,7 @@ public class ChestInteraction : MonoBehaviour
             if (playerMovement != null)
             {
                 playerMovement.UnlockJump(); // Unlock the ability to jump
+                playerMovement.DisableGlide(); // Disable gliding functionality
             }
 
             // Trigger the barrel's animation
