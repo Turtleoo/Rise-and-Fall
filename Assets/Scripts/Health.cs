@@ -15,6 +15,7 @@ public class Health : MonoBehaviour
     public Button resetButton;     // UI button to reset the game
 
     private Movement playerMovement; // Reference to the Movement script
+    private Animator animator; // Reference to the Animator component
 
     // Health bar related
     [Header("Health Bar Settings")]
@@ -40,6 +41,7 @@ public class Health : MonoBehaviour
         }
 
         playerMovement = GetComponent<Movement>();
+        animator = GetComponent<Animator>(); // Get the Animator component
 
         // Initialize Health Bar
         InitializeHealthBar();
@@ -57,8 +59,6 @@ public class Health : MonoBehaviour
                 Debug.Log("Player is no longer invulnerable");
             }
         }
-
-        // Optional: Additional update logic
     }
 
     /// Initializes the health bar by instantiating heart prefabs.
@@ -110,6 +110,12 @@ public class Health : MonoBehaviour
 
         currentHealth -= amount;
         Debug.Log("Player took damage! Current health: " + currentHealth);
+
+        // Play the "Hit" animation
+        if (animator != null)
+        {
+            animator.SetTrigger("Hit");
+        }
 
         UpdateHealthBar();
 
