@@ -17,6 +17,10 @@ public class Health : MonoBehaviour
     private Movement playerMovement; // Reference to the Movement script
     private Animator animator; // Reference to the Animator component
 
+    // Audio sources
+    public AudioSource hitAudioSource; // Assign an audio clip for "hit" sound in the Inspector
+    public AudioSource deathAudioSource; // Assign an audio clip for "death" sound in the Inspector
+
     // Health bar related
     [Header("Health Bar Settings")]
     public GameObject heartFillPrefab;   // Assign the heart_fill prefab in the Inspector
@@ -117,6 +121,12 @@ public class Health : MonoBehaviour
             animator.SetTrigger("Hit");
         }
 
+        // Play hit audio
+        if (hitAudioSource != null)
+        {
+            hitAudioSource.Play();
+        }
+
         UpdateHealthBar();
 
         if (currentHealth <= 0)
@@ -188,6 +198,12 @@ public class Health : MonoBehaviour
     {
         Debug.Log("Player has died!");
 
+        // Play death audio
+        if (deathAudioSource != null)
+        {
+            deathAudioSource.Play();
+        }
+
         if (loseMessage != null)
         {
             loseMessage.SetActive(true); // Display the lose message
@@ -218,6 +234,7 @@ public class Health : MonoBehaviour
         // Stop most game functions but allow UI interaction
         Time.timeScale = 0.0001f;
     }
+
     /// Resets the game by reloading the current scene.
     public void ResetGame()
     {

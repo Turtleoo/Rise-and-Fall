@@ -1,5 +1,24 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!243 &-5206433250883694792
+AudioMixerGroupController:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: Cave sounds
+  m_AudioMixer: {fileID: 24100000}
+  m_GroupID: 216dd50e0cb83f5469a29491b0aaf5f5
+  m_Children: []
+  m_Volume: fca907de95141114f967f43c02640756
+  m_Pitch: 152f6d223e5f82a42b2a06fc850af151
+  m_Send: 00000000000000000000000000000000
+  m_Effects:
+  - {fileID: 3809078628023052825}
+  m_UserColorIndex: 0
+  m_Mute: 0
+  m_Solo: 0
+  m_BypassEffects: 0
 --- !u!244 &-3873154455774421945
 AudioMixerEffectController:
   m_ObjectHideFlags: 3
@@ -29,11 +48,18 @@ AudioMixerController:
   m_SuspendThreshold: -80
   m_EnableSuspend: 1
   m_UpdateMode: 0
-  m_ExposedParameters: []
+  m_ExposedParameters:
+  - guid: fca907de95141114f967f43c02640756
+    name: CaveSounds
+  - guid: 39cbaf6c2233678478fc5ec232ccef43
+    name: FallingMusic
+  - guid: 76cd25261e619ed46abab8c7f7696750
+    name: MasterVolume
   m_AudioMixerGroupViews:
   - guids:
     - a3d09cd85a156d3448820d42b5207913
     - daf56f2c69998574a84e9a8e9522610f
+    - 216dd50e0cb83f5469a29491b0aaf5f5
     name: View
   m_CurrentViewIndex: 0
   m_TargetSnapshot: {fileID: 24500006}
@@ -48,6 +74,7 @@ AudioMixerGroupController:
   m_GroupID: a3d09cd85a156d3448820d42b5207913
   m_Children:
   - {fileID: 4504033667157917737}
+  - {fileID: -5206433250883694792}
   m_Volume: 76cd25261e619ed46abab8c7f7696750
   m_Pitch: a004ea78c1e8d1e41b1c6beb8e32035b
   m_Send: 00000000000000000000000000000000
@@ -82,15 +109,30 @@ AudioMixerSnapshotController:
   m_SnapshotID: f48e9e929c790cc4b88f730459e15154
   m_FloatValues:
     76cd25261e619ed46abab8c7f7696750: -24.530554
-    39cbaf6c2233678478fc5ec232ccef43: -80
+    a004ea78c1e8d1e41b1c6beb8e32035b: 1
+    39cbaf6c2233678478fc5ec232ccef43: -18.005796
   m_TransitionOverrides: {}
+--- !u!244 &3809078628023052825
+AudioMixerEffectController:
+  m_ObjectHideFlags: 3
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: 
+  m_EffectID: df05e5a901e56bb43a7decb1cdd6e1eb
+  m_EffectName: Attenuation
+  m_MixLevel: bca623f9354fade4a9a1e13da7fe9d66
+  m_Parameters: []
+  m_SendTarget: {fileID: 0}
+  m_EnableWetMix: 0
+  m_Bypass: 0
 --- !u!243 &4504033667157917737
 AudioMixerGroupController:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: New Group
+  m_Name: Falling music
   m_AudioMixer: {fileID: 24100000}
   m_GroupID: daf56f2c69998574a84e9a8e9522610f
   m_Children: []
