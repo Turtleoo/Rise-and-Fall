@@ -14,6 +14,10 @@ public class EscapeBat : MonoBehaviour
     private Vector2 randomOffset;       // Randomized erratic movement offset
     private float rngTimer;             // Timer for changing RNG movement
 
+    // Movement bounds
+    private readonly Vector2 minBounds = new Vector2(-6f, float.MinValue); // No lower limit for Y
+    private readonly Vector2 maxBounds = new Vector2(8f, -1.4f);          // Upper limit for Y is -1.4
+
     private void Start()
     {
         if (attackCollider == null || aggroCollider == null)
@@ -28,26 +32,20 @@ public class EscapeBat : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        // Trigger aggro when the player enters the aggro collider
         if (aggroCollider != null && aggroCollider.bounds.Contains(other.transform.position) && other.CompareTag("Player"))
         {
-            // Set the player's transform for flight direction
-            playerTransform = other.transform;
-
-
+            playerTransform = other.transform; // Set the player's transform for flight direction
             isFlying = true;
         }
     }
 
     private void OnTriggerStay2D(Collider2D other)
     {
-        // Apply damage when the player is inside the attack collider
         if (attackCollider != null && attackCollider.bounds.Contains(other.transform.position) && other.CompareTag("Player"))
         {
             Health playerHealth = other.GetComponent<Health>();
             if (playerHealth != null)
             {
-                // Apply damage
                 playerHealth.TakeDamage(1);
             }
         }
@@ -61,7 +59,6 @@ public class EscapeBat : MonoBehaviour
             rngTimer -= Time.deltaTime;
             if (rngTimer <= 0)
             {
-                // Generate a new random offset
                 randomOffset = new Vector2(
                     Random.Range(-rngMovementRange, rngMovementRange),
                     Random.Range(-rngMovementRange, rngMovementRange)
@@ -69,15 +66,24 @@ public class EscapeBat : MonoBehaviour
                 rngTimer = rngChangeInterval; // Reset the timer
             }
 
-            // Calculate the spooky, erratic target position
             Vector2 targetPosition = (Vector2)playerTransform.position + randomOffset;
 
-            // Move the bat towards the randomized target position
+            // Move towards the randomized target position
             transform.position = Vector2.MoveTowards(
                 transform.position,
                 targetPosition,
                 batSpeed * Time.deltaTime
             );
+
+            // Apply clamping when the lever is inactive
+            if (!Lever.IsLeverActive)
+            {
+                transform.position = new Vector3(
+                    Mathf.Clamp(transform.position.x, minBounds.x, maxBounds.x),
+                    Mathf.Clamp(transform.position.y, float.MinValue, maxBounds.y),
+                    transform.position.z
+                );
+            }
         }
     }
 }
