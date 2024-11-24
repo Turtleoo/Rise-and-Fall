@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using System.Collections; // Added this line
 
 public class Health : MonoBehaviour
 {
@@ -18,7 +19,7 @@ public class Health : MonoBehaviour
     private Animator animator; // Reference to the Animator component
 
     // Audio sources
-    public AudioSource hitAudioSource; // Assign an audio clip for "hit" sound in the Inspector
+    public AudioSource hitAudioSource;   // Assign an audio clip for "hit" sound in the Inspector
     public AudioSource deathAudioSource; // Assign an audio clip for "death" sound in the Inspector
 
     // Health bar related
@@ -198,12 +199,53 @@ public class Health : MonoBehaviour
     {
         Debug.Log("Player has died!");
 
+        // Disable player movement immediately
+        if (playerMovement != null)
+        {
+            playerMovement.enabled = false;
+        }
+
         // Play death audio
         if (deathAudioSource != null)
         {
             deathAudioSource.Play();
         }
 
+        // Play death animation
+        if (animator != null)
+        {
+            animator.SetTrigger("Die");
+        }
+
+        // Start the death sequence coroutine
+        StartCoroutine(DeathSequence());
+    }
+
+    /// Coroutine to handle the death sequence.
+    private IEnumerator DeathSequence()
+    {
+        // Wait until the death animation starts
+        if (animator != null)
+        {
+            // Wait until the animator is in the "Die" state
+            while (!animator.GetCurrentAnimatorStateInfo(0).IsName("Die"))
+            {
+                yield return null;
+            }
+
+            // Now wait until the animation has finished playing
+            while (animator.GetCurrentAnimatorStateInfo(0).normalizedTime < 1.0f)
+            {
+                yield return null;
+            }
+        }
+        else
+        {
+            // If no animator, wait for a default duration
+            yield return new WaitForSeconds(1f);
+        }
+
+        // Now display the lose message and reset button
         if (loseMessage != null)
         {
             loseMessage.SetActive(true); // Display the lose message
@@ -218,17 +260,11 @@ public class Health : MonoBehaviour
             RectTransform resetButtonRectTransform = resetButton.GetComponent<RectTransform>();
 
             // Adjust the offset to place the button above the player
-            Vector3 buttonPosition = playerScreenPosition + new Vector3(0, 0, 1); // 100 units above the player's screen position
+            Vector3 buttonPosition = playerScreenPosition + new Vector3(0, 100, 0); // Adjust Y offset as needed
             resetButtonRectTransform.position = buttonPosition;
 
             // Explicitly set the size of the button's RectTransform if needed
             resetButtonRectTransform.sizeDelta = new Vector2(300, 100); // Set desired width and height
-        }
-
-        // Disable player movement
-        if (playerMovement != null)
-        {
-            playerMovement.enabled = false;
         }
 
         // Stop most game functions but allow UI interaction
