@@ -3,7 +3,7 @@ using UnityEngine;
 public class Lever : MonoBehaviour
 {
     [Header("Prompt Settings")]
-    public GameObject prompt; // UI element to display "Press E"
+    public GameObject prompt;
 
     [Header("Gear Settings")]
     public Transform gear;
@@ -13,10 +13,11 @@ public class Lever : MonoBehaviour
     public Transform platform;
     public float platformMoveSpeed = 5f;
     public float moveDuration = 2f;
+    public float platformMoveDistance = 10f; // New separate field for platform move distance
 
     [Header("Object Movement Settings")]
     public Transform objectToMove;
-    public float moveDistance = 3f;
+    public float moveDistance = 20f;
     public float objectMoveSpeed = 2f;
 
     [Header("Lever Animation")]
@@ -28,14 +29,22 @@ public class Lever : MonoBehaviour
     public AudioSource objectMoveAudioSource;
 
     private bool playerInRange = false;
-    private static bool isLeverActive = false;
+    private static bool isLeverActive = false; // Static variable
     private float moveTimer = 0f;
     private bool hasPlayedPlatformAudio = false;
 
+    private Vector3 platformStartPosition;
+    private Vector3 platformTargetPosition;
     private Vector3 objectStartPosition;
     private Vector3 objectTargetPosition;
 
     public static bool IsLeverActive => isLeverActive;
+
+    private void Awake()
+    {
+        // Reset static variables to initial state
+        isLeverActive = false;
+    }
 
     private void Start()
     {
@@ -44,10 +53,19 @@ public class Lever : MonoBehaviour
             prompt.SetActive(false);
         }
 
+        if (platform != null)
+        {
+            platformStartPosition = platform.position;
+            platformTargetPosition = platformStartPosition + new Vector3(platformMoveDistance, 0, 0); // Use new platformMoveDistance field
+        }
+
         if (objectToMove != null)
         {
             objectStartPosition = objectToMove.position;
         }
+
+        // Ensure platform and object are in their initial positions
+        ResetPositions();
     }
 
     private void Update()
@@ -63,8 +81,9 @@ public class Lever : MonoBehaviour
 
             if (platform != null)
             {
-                float direction = isLeverActive ? 1 : -1;
-                platform.position += new Vector3(direction * platformMoveSpeed * Time.deltaTime, 0, 0);
+                // Move platform incrementally
+                Vector3 targetPosition = isLeverActive ? platformTargetPosition : platformStartPosition;
+                platform.position = Vector3.MoveTowards(platform.position, targetPosition, platformMoveSpeed * Time.deltaTime);
             }
 
             if (gear != null)
@@ -139,6 +158,20 @@ public class Lever : MonoBehaviour
         if (prompt != null)
         {
             prompt.SetActive(false);
+        }
+    }
+
+    private void ResetPositions()
+    {
+        // Reset platform and object to their initial positions
+        if (platform != null)
+        {
+            platform.position = platformStartPosition;
+        }
+
+        if (objectToMove != null)
+        {
+            objectToMove.position = objectStartPosition;
         }
     }
 }

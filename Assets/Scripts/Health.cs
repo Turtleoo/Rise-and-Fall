@@ -3,7 +3,6 @@ using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using System.Collections;
 
-
 public class Health : MonoBehaviour
 {
     public int maxHealth = 5; // Total health points 
@@ -236,32 +235,33 @@ public class Health : MonoBehaviour
             }
 
             Debug.Log("Death animation completed.");
-
-            // Run the remaining death logic
-            if (loseMessage != null)
-            {
-                loseMessage.SetActive(true); // Display the lose message
-            }
-
-            if (resetButton != null)
-            {
-                resetButton.gameObject.SetActive(true); // Show the reset button
-
-                // Set the button's position above the player
-                Vector3 playerScreenPosition = Camera.main.WorldToScreenPoint(transform.position);
-                RectTransform resetButtonRectTransform = resetButton.GetComponent<RectTransform>();
-
-                // Adjust the offset to place the button above the player
-                Vector3 buttonPosition = playerScreenPosition + new Vector3(0, 0, 1); // 100 units above the player's screen position
-                resetButtonRectTransform.position = buttonPosition;
-
-                // Explicitly set the size of the button's RectTransform if needed
-                resetButtonRectTransform.sizeDelta = new Vector2(300, 100); // Set desired width and height
-            }
-
-            // Stop most game functions but allow UI interaction
-            Time.timeScale = 0.00001f;
         }
+
+        // After animation, display the lose message and reset button
+        if (loseMessage != null)
+        {
+            loseMessage.SetActive(true); // Display the lose message
+        }
+
+        if (resetButton != null)
+        {
+            resetButton.gameObject.SetActive(true); // Show the reset button
+
+            // Set the button's position above the player
+            Vector3 playerScreenPosition = Camera.main.WorldToScreenPoint(transform.position);
+            RectTransform resetButtonRectTransform = resetButton.GetComponent<RectTransform>();
+
+            // Adjust the offset to place the button above the player
+            Vector3 buttonPosition = playerScreenPosition + new Vector3(0, 100, 0); // Offset above the player's screen position
+            resetButtonRectTransform.position = buttonPosition;
+
+            // Explicitly set the size of the button's RectTransform if needed
+            resetButtonRectTransform.sizeDelta = new Vector2(300, 100); // Set desired width and height
+        }
+
+        // Slow down the game only after the animation and UI updates are completed
+        yield return new WaitForSeconds(0.5f); // Optional delay before slowing the game down
+        Time.timeScale = 0.00001f; // Slow the game
     }
 
     /// Coroutine to reset the "Die" trigger in the Animator after the animation plays.

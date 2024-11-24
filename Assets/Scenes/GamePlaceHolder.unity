@@ -84264,8 +84264,9 @@ MonoBehaviour:
   platform: {fileID: 7753890}
   platformMoveSpeed: 4
   moveDuration: 1
+  platformMoveDistance: 6
   objectToMove: {fileID: 1278278586}
-  moveDistance: 2.3
+  moveDistance: 2.2
   objectMoveSpeed: 2
   leverAnimator: {fileID: 972275824}
   leverFlickAudioSource: {fileID: 972275831}
@@ -114538,7 +114539,7 @@ MonoBehaviour:
     m_PressedTrigger: Pressed
     m_SelectedTrigger: Selected
     m_DisabledTrigger: Disabled
-  m_Interactable: 0
+  m_Interactable: 1
   m_TargetGraphic: {fileID: 1916645018}
   m_OnClick:
     m_PersistentCalls:
@@ -114556,7 +114557,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 0}
+  m_Color: {r: 1, g: 0, b: 0.047002792, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
