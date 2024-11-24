@@ -27,6 +27,10 @@ public class Movement : MonoBehaviour
     private bool isGliding = false; // Is the player currently gliding?
     private bool isFastFalling = false; // Is the player currently fast-falling?
 
+    // Audio sources for jump and glide
+    public AudioSource jumpAudioSource;
+    public AudioSource glideAudioSource;
+
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
@@ -82,36 +86,45 @@ public class Movement : MonoBehaviour
         // Glide logic: Always active when falling and gliding is enabled
         if (canGlide && !isGrounded && rb.linearVelocity.y < 0)
         {
-            isGliding = true;
-
-            // Check for fast fall input
-            if (Input.GetKey(KeyCode.S))
+            if (Input.GetKey(KeyCode.S)) // Fast-fall input
             {
                 rb.linearVelocity = new Vector2(rb.linearVelocity.x, -fastFallSpeed);
 
-                // Trigger fast-fall animation
                 if (!isFastFalling)
                 {
                     isFastFalling = true;
                     animator.SetBool("IsFastFalling", true);
                 }
 
-                // Ensure gliding animation is off while fast-falling
-                if (animator.GetBool("IsFlying"))
+                if (isGliding)
                 {
+                    isGliding = false;
+
+                    // Stop gliding audio
+                    if (glideAudioSource != null && glideAudioSource.isPlaying)
+                    {
+                        glideAudioSource.Stop();
+                    }
+
                     animator.SetBool("IsFlying", false);
                 }
             }
             else
             {
-                rb.linearVelocity = new Vector2(rb.linearVelocity.x, -glideFallSpeed);
-
-                // Trigger gliding animation
-                if (isFastFalling)
+                if (!isGliding)
                 {
-                    isFastFalling = false;
-                    animator.SetBool("IsFastFalling", false);
+                    isGliding = true;
+
+                    // Play gliding audio
+                    if (glideAudioSource != null && !glideAudioSource.isPlaying)
+                    {
+                        glideAudioSource.Play();
+                    }
                 }
+
+                isFastFalling = false;
+                animator.SetBool("IsFastFalling", false);
+                rb.linearVelocity = new Vector2(rb.linearVelocity.x, -glideFallSpeed);
 
                 if (!animator.GetBool("IsFlying"))
                 {
@@ -123,17 +136,19 @@ public class Movement : MonoBehaviour
         {
             if (isGliding)
             {
-                // Stop gliding animation
+                isGliding = false;
+
+                // Stop gliding audio
+                if (glideAudioSource != null && glideAudioSource.isPlaying)
+                {
+                    glideAudioSource.Stop();
+                }
+
                 animator.SetBool("IsFlying", false);
             }
-            isGliding = false;
 
-            if (isFastFalling)
-            {
-                // Stop fast-fall animation
-                isFastFalling = false;
-                animator.SetBool("IsFastFalling", false);
-            }
+            isFastFalling = false;
+            animator.SetBool("IsFastFalling", false);
         }
 
         animator.SetFloat("VerticalSpeed", rb.linearVelocity.y);
@@ -155,6 +170,11 @@ public class Movement : MonoBehaviour
         rb.linearVelocity = new Vector2(rb.linearVelocity.x, jumpForce);
         animator.SetBool("IsJump", true);
         isGrounded = false;
+
+        if (jumpAudioSource != null)
+        {
+            jumpAudioSource.Play();
+        }
     }
 
     void DoubleJump()
@@ -163,6 +183,11 @@ public class Movement : MonoBehaviour
         hasDoubleJumped = true;
         animator.SetBool("IsJump", true);
         isGrounded = false;
+
+        if (jumpAudioSource != null)
+        {
+            jumpAudioSource.Play();
+        }
     }
 
     void TripleJump()
@@ -172,6 +197,11 @@ public class Movement : MonoBehaviour
         tripleJumpAvailable = false;
         animator.SetBool("IsJump", true);
         isGrounded = false;
+
+        if (jumpAudioSource != null)
+        {
+            jumpAudioSource.Play();
+        }
     }
 
     void OnCollisionStay2D(Collision2D collision)

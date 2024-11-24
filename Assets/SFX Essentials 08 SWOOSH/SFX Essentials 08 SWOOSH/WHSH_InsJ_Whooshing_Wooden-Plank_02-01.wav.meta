@@ -1,0 +1,29 @@
+fileFormatVersion: 2
+guid: bc41d5f373b540e46b1d3b8dd467b04c
+AudioImporter:
+  externalObjects: {}
+  serializedVersion: 6
+  defaultSettings:
+    loadType: 0
+    sampleRateSetting: 0
+    sampleRateOverride: 44100
+    compressionFormat: 1
+    quality: 1
+    conversionMode: 0
+  platformSettingOverrides: {}
+  forceToMono: 0
+  normalize: 1
+  preloadAudioData: 1
+  loadInBackground: 0
+  ambisonic: 0
+  3D: 1
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 197567
+  packageName: SFX Essentials 08 - SWOOSH
+  packageVersion: 1.0
+  assetPath: Assets/SFX Essentials 08 SWOOSH/SFX Essentials 08 SWOOSH/WHSH_InsJ_Whooshing_Wooden-Plank_02-01.wav
+  uploadId: 442724

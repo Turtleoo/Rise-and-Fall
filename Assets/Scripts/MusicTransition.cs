@@ -1,4 +1,5 @@
 using UnityEngine;
+using System.Collections;
 
 public class MusicTransition : MonoBehaviour
 {
@@ -6,8 +7,10 @@ public class MusicTransition : MonoBehaviour
     public AudioSource bottomMusic;   // Reference to the bottom music Audio Source
     public GameObject bottomTrigger;  // Reference to the GameObject with the bottom trigger
     public float fadeDuration = 1.0f; // Duration of the fade (seconds)
+    public float loopInterval = 2.0f; // Time interval between loops when looping is enabled
 
     private bool hasReachedBottom = false;
+    private Coroutine loopingCoroutine = null; // To track the looping coroutine
 
     private void Start()
     {
@@ -31,7 +34,28 @@ public class MusicTransition : MonoBehaviour
         }
     }
 
-    private System.Collections.IEnumerator FadeOutAndSwitch()
+    private void OnTriggerExit2D(Collider2D other)
+    {
+        // Stop the bottom music looping when the player leaves the collider
+        if (other.CompareTag("Player") && hasReachedBottom)
+        {
+            Debug.Log("Player exited the trigger area. Stopping bottom music loop.");
+            hasReachedBottom = false;
+
+            if (loopingCoroutine != null)
+            {
+                StopCoroutine(loopingCoroutine);
+                loopingCoroutine = null;
+            }
+
+            if (bottomMusic.isPlaying)
+            {
+                bottomMusic.Stop();
+            }
+        }
+    }
+
+    private IEnumerator FadeOutAndSwitch()
     {
         // Fade out the falling music
         float startVolume = fallingMusic.volume;
@@ -46,7 +70,16 @@ public class MusicTransition : MonoBehaviour
         fallingMusic.volume = startVolume; // Reset the volume for future use
 
         // Switch to the bottom music
-        bottomMusic.Play();
+        if (bottomMusic.loop)
+        {
+            // Stop Unity's default looping and handle it manually
+            bottomMusic.loop = false;
+            loopingCoroutine = StartCoroutine(PlayMusicWithInterval(bottomMusic));
+        }
+        else
+        {
+            bottomMusic.Play();
+        }
 
         // Optional: Fade in the bottom music
         bottomMusic.volume = 0;
@@ -54,6 +87,19 @@ public class MusicTransition : MonoBehaviour
         {
             bottomMusic.volume += startVolume * Time.deltaTime / fadeDuration;
             yield return null;
+        }
+    }
+
+    private IEnumerator PlayMusicWithInterval(AudioSource music)
+    {
+        while (true)
+        {
+            music.Play();
+
+            // Wait for the clip duration + the loop interval
+            yield return new WaitForSeconds(music.clip.length + loopInterval);
+
+            music.Stop();
         }
     }
 }
