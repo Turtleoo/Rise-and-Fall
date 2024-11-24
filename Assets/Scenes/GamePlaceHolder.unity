@@ -6459,6 +6459,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1705567555}
     m_Modifications:
+    - target: {fileID: 366846951589063328, guid: 41b974e66dc0860458dda71f71538d8b, type: 3}
+      propertyPath: m_SortingOrder
+      value: -1
+      objectReference: {fileID: 0}
     - target: {fileID: 860330525036708706, guid: 41b974e66dc0860458dda71f71538d8b, type: 3}
       propertyPath: m_LocalScale.x
       value: 0.40386093
@@ -14338,6 +14342,98 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!1 &565924271
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 565924274}
+  - component: {fileID: 565924273}
+  - component: {fileID: 565924272}
+  m_Layer: 0
+  m_Name: HealthRefill
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &565924272
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 565924271}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 884c8a74f357d35498297b9aea4b3474, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  refillAmount: 7
+--- !u!61 &565924273
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 565924271}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_CompositeOperation: 0
+  m_CompositeOrder: 0
+  m_Offset: {x: 5.459898, y: -0.05406189}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0, y: 0}
+    oldSize: {x: 0, y: 0}
+    newSize: {x: 0, y: 0}
+    adaptiveTilingThreshold: 0
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  m_Size: {x: 11.919796, y: 1.1081238}
+  m_EdgeRadius: 0
+--- !u!4 &565924274
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 565924271}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -5.71, y: -136.77, z: -0.11687339}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &569149107
 GameObject:
   m_ObjectHideFlags: 0
@@ -82779,6 +82875,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1705567555}
     m_Modifications:
+    - target: {fileID: 366846951589063328, guid: 41b974e66dc0860458dda71f71538d8b, type: 3}
+      propertyPath: m_SortingOrder
+      value: -1
+      objectReference: {fileID: 0}
     - target: {fileID: 860330525036708706, guid: 41b974e66dc0860458dda71f71538d8b, type: 3}
       propertyPath: m_LocalScale.x
       value: 0.40386093
@@ -109386,8 +109486,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 03e575241fc45f549b78e4d13a1638f6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHealth: 5
-  loseMessage: {fileID: 1916645015}
+  maxHealth: 7
+  currentHealth: 0
+  loseMessage: {fileID: 0}
   resetButton: {fileID: 1916645017}
   hitAudioSource: {fileID: 2012663641}
   deathAudioSource: {fileID: 2012663644}
@@ -112451,3 +112552,4 @@ SceneRoots:
   - {fileID: 1470883773}
   - {fileID: 419308813}
   - {fileID: 858113966}
+  - {fileID: 565924274}
