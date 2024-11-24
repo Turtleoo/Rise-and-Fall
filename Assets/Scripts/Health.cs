@@ -6,7 +6,7 @@ using System.Collections; // Added this line
 public class Health : MonoBehaviour
 {
     public int maxHealth = 5; // Total health points 
-    private int currentHealth; // Current health points
+    public int currentHealth; // Current health points
 
     private bool isInvulnerable = false;
     private float invulnerabilityDuration = 1f; // Duration of invulnerability
