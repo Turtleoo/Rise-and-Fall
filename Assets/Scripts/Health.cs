@@ -1,7 +1,8 @@
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
-using System.Collections; // Added this line
+using System.Collections;
+
 
 public class Health : MonoBehaviour
 {
@@ -19,7 +20,7 @@ public class Health : MonoBehaviour
     private Animator animator; // Reference to the Animator component
 
     // Audio sources
-    public AudioSource hitAudioSource;   // Assign an audio clip for "hit" sound in the Inspector
+    public AudioSource hitAudioSource; // Assign an audio clip for "hit" sound in the Inspector
     public AudioSource deathAudioSource; // Assign an audio clip for "death" sound in the Inspector
 
     // Health bar related
@@ -145,7 +146,6 @@ public class Health : MonoBehaviour
     }
 
     /// Updates the health bar visuals based on current health.
-    /// Replaces heart_fill with heart_empty from right to left.
     void UpdateHealthBar()
     {
         for (int i = 0; i < maxHealth; i++)
@@ -199,10 +199,12 @@ public class Health : MonoBehaviour
     {
         Debug.Log("Player has died!");
 
-        // Disable player movement immediately
-        if (playerMovement != null)
+        // Play death animation
+        if (animator != null)
         {
-            playerMovement.enabled = false;
+            animator.SetTrigger("Die");
+            Debug.Log("Death animation triggered.");
+            StartCoroutine(WaitForDeathAnimation());
         }
 
         // Play death audio
@@ -211,64 +213,66 @@ public class Health : MonoBehaviour
             deathAudioSource.Play();
         }
 
-        // Play death animation
-        if (animator != null)
+        // Disable player movement immediately
+        if (playerMovement != null)
         {
-            animator.SetTrigger("Die");
+            playerMovement.enabled = false;
         }
-
-        // Start the death sequence coroutine
-        StartCoroutine(DeathSequence());
     }
 
-    /// Coroutine to handle the death sequence.
-    private IEnumerator DeathSequence()
+    /// Coroutine to wait for the death animation to finish before executing the rest of the logic
+    private IEnumerator WaitForDeathAnimation()
     {
-        // Wait until the death animation starts
         if (animator != null)
         {
-            // Wait until the animator is in the "Die" state
-            while (!animator.GetCurrentAnimatorStateInfo(0).IsName("Die"))
+            // Get the animator state info
+            AnimatorStateInfo stateInfo = animator.GetCurrentAnimatorStateInfo(0);
+
+            // Wait for the animation with the "Die" trigger to finish
+            while (stateInfo.IsName("Die") && stateInfo.normalizedTime < 1.0f)
             {
-                yield return null;
+                yield return null; // Wait for the next frame
+                stateInfo = animator.GetCurrentAnimatorStateInfo(0);
             }
 
-            // Now wait until the animation has finished playing
-            while (animator.GetCurrentAnimatorStateInfo(0).normalizedTime < 1.0f)
+            Debug.Log("Death animation completed.");
+
+            // Run the remaining death logic
+            if (loseMessage != null)
             {
-                yield return null;
+                loseMessage.SetActive(true); // Display the lose message
             }
+
+            if (resetButton != null)
+            {
+                resetButton.gameObject.SetActive(true); // Show the reset button
+
+                // Set the button's position above the player
+                Vector3 playerScreenPosition = Camera.main.WorldToScreenPoint(transform.position);
+                RectTransform resetButtonRectTransform = resetButton.GetComponent<RectTransform>();
+
+                // Adjust the offset to place the button above the player
+                Vector3 buttonPosition = playerScreenPosition + new Vector3(0, 0, 1); // 100 units above the player's screen position
+                resetButtonRectTransform.position = buttonPosition;
+
+                // Explicitly set the size of the button's RectTransform if needed
+                resetButtonRectTransform.sizeDelta = new Vector2(300, 100); // Set desired width and height
+            }
+
+            // Stop most game functions but allow UI interaction
+            Time.timeScale = 0.00001f;
         }
-        else
+    }
+
+    /// Coroutine to reset the "Die" trigger in the Animator after the animation plays.
+    private IEnumerator ResetDeathTrigger()
+    {
+        yield return new WaitForSeconds(0.1f); // Wait for a short time to ensure the animation starts
+        if (animator != null)
         {
-            // If no animator, wait for a default duration
-            yield return new WaitForSeconds(1f);
+            animator.ResetTrigger("Die");
+            Debug.Log("Death trigger reset.");
         }
-
-        // Now display the lose message and reset button
-        if (loseMessage != null)
-        {
-            loseMessage.SetActive(true); // Display the lose message
-        }
-
-        if (resetButton != null)
-        {
-            resetButton.gameObject.SetActive(true); // Show the reset button
-
-            // Set the button's position above the player
-            Vector3 playerScreenPosition = Camera.main.WorldToScreenPoint(transform.position);
-            RectTransform resetButtonRectTransform = resetButton.GetComponent<RectTransform>();
-
-            // Adjust the offset to place the button above the player
-            Vector3 buttonPosition = playerScreenPosition + new Vector3(0, 100, 0); // Adjust Y offset as needed
-            resetButtonRectTransform.position = buttonPosition;
-
-            // Explicitly set the size of the button's RectTransform if needed
-            resetButtonRectTransform.sizeDelta = new Vector2(300, 100); // Set desired width and height
-        }
-
-        // Stop most game functions but allow UI interaction
-        Time.timeScale = 0.0001f;
     }
 
     /// Resets the game by reloading the current scene.
