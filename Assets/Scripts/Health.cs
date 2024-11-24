@@ -187,6 +187,7 @@ public class Health : MonoBehaviour
     private void Die()
     {
         Debug.Log("Player has died!");
+
         if (loseMessage != null)
         {
             loseMessage.SetActive(true); // Display the lose message
@@ -196,12 +197,16 @@ public class Health : MonoBehaviour
         {
             resetButton.gameObject.SetActive(true); // Show the reset button
 
-            // Explicitly set the size of the button's RectTransform
-            RectTransform rectTransform = resetButton.GetComponent<RectTransform>();
-            rectTransform.sizeDelta = new Vector2(3000, 1000); // Set desired Width and Height
+            // Set the button's position above the player
+            Vector3 playerScreenPosition = Camera.main.WorldToScreenPoint(transform.position);
+            RectTransform resetButtonRectTransform = resetButton.GetComponent<RectTransform>();
 
-            // Force a layout rebuild to update the text size
-            LayoutRebuilder.ForceRebuildLayoutImmediate(rectTransform);
+            // Adjust the offset to place the button above the player
+            Vector3 buttonPosition = playerScreenPosition + new Vector3(0, 0, 1); // 100 units above the player's screen position
+            resetButtonRectTransform.position = buttonPosition;
+
+            // Explicitly set the size of the button's RectTransform if needed
+            resetButtonRectTransform.sizeDelta = new Vector2(300, 100); // Set desired width and height
         }
 
         // Disable player movement
@@ -213,7 +218,6 @@ public class Health : MonoBehaviour
         // Stop most game functions but allow UI interaction
         Time.timeScale = 0.0001f;
     }
-
     /// Resets the game by reloading the current scene.
     public void ResetGame()
     {
