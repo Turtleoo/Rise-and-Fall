@@ -23,6 +23,10 @@ public class ChestInteraction : MonoBehaviour
     [Header("Escape Tutorial Settings")]
     public float textInterval = 2.0f; // Time interval between each text display
 
+    [Header("Object Toggle Settings")]
+    public GameObject[] objectsToDisable; // Array of objects to disable
+    public GameObject[] objectsToEnable; // Array of objects to enable
+
     private bool playerInRange = false;
     private bool chestOpened = false; // Tracks whether the chest has already been opened
     private Transform[] tutorialTexts; // Array to store child text prompts
@@ -104,8 +108,35 @@ public class ChestInteraction : MonoBehaviour
                 Debug.LogError("Chest Animator is not assigned!");
             }
 
+            // Disable and enable specified objects
+            ToggleGameObjects();
+
             // Start the escape sequence tutorial
             StartCoroutine(PlayEscapeTutorial());
+        }
+    }
+
+    /// Toggles the specified game objects
+    private void ToggleGameObjects()
+    {
+        // Disable specified objects
+        foreach (GameObject obj in objectsToDisable)
+        {
+            if (obj != null)
+            {
+                obj.SetActive(false);
+                Debug.Log($"Disabled object: {obj.name}");
+            }
+        }
+
+        // Enable specified objects
+        foreach (GameObject obj in objectsToEnable)
+        {
+            if (obj != null)
+            {
+                obj.SetActive(true);
+                Debug.Log($"Enabled object: {obj.name}");
+            }
         }
     }
 

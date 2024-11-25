@@ -32,6 +32,7 @@ public class Lever : MonoBehaviour
     private static bool isLeverActive = false; // Static variable
     private float moveTimer = 0f;
     private bool hasPlayedPlatformAudio = false;
+    private bool leverInteracted = false; // New field to track lever interaction
 
     private Vector3 platformStartPosition;
     private Vector3 platformTargetPosition;
@@ -94,7 +95,7 @@ public class Lever : MonoBehaviour
 
             hasPlayedPlatformAudio = false;
         }
-        else if (!hasPlayedPlatformAudio)
+        else if (!hasPlayedPlatformAudio && leverInteracted)
         {
             if (platformFinishAudioSource != null)
             {
@@ -137,6 +138,7 @@ public class Lever : MonoBehaviour
     private void ToggleLever()
     {
         isLeverActive = !isLeverActive;
+        leverInteracted = true; // Mark that the lever has been interacted with
 
         if (leverFlickAudioSource != null)
         {
