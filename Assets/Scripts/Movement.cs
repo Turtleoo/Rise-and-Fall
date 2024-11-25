@@ -232,7 +232,7 @@ public class Movement : MonoBehaviour
     {
         rb.linearVelocity = new Vector2(rb.linearVelocity.x, jumpForce * 1.2f);
         hasDoubleJumped = true;
-        animator.SetBool("IsJump", true);
+        animator.SetBool("IsDoubleJump", true);
         isGrounded = false;
 
         if (jumpAudioSource != null)
