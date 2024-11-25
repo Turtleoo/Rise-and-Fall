@@ -100,13 +100,18 @@ AudioMixerController:
   m_SuspendThreshold: -80
   m_EnableSuspend: 1
   m_UpdateMode: 0
-  m_ExposedParameters: []
+  m_ExposedParameters:
+  - guid: 9853cb865f2fa324887f4e8f4c6e4824
+    name: Bats
+  - guid: 964ce363af1cb8045b8e8664c6382216
+    name: Escape
   m_AudioMixerGroupViews:
   - guids:
     - e51d2cec60d5b984ca7e704b750829cf
     - caf3868a3d2227a4dafc92ac0f596e13
     - 1c1ba56f653739b4ea24b1e2f474a17d
     - 5a67b0ca53c521249b90e6a0c676b174
+    - 8cbad4ed9bea7bc40aa219518542a8d4
     name: View
   m_CurrentViewIndex: 0
   m_TargetSnapshot: {fileID: 24500006}
@@ -123,6 +128,7 @@ AudioMixerGroupController:
   - {fileID: -7195289805331238183}
   - {fileID: -1140729669144734366}
   - {fileID: -357677035300724962}
+  - {fileID: 2323971651314335411}
   m_Volume: 296ec67ad8f89204dbb4d13ef7c71c70
   m_Pitch: 3694f823dd2b8034992fad065778b185
   m_Send: 00000000000000000000000000000000
@@ -157,8 +163,28 @@ AudioMixerSnapshotController:
   m_SnapshotID: 11d6bd436e5bb50468bbab2d1582a8f2
   m_FloatValues:
     964ce363af1cb8045b8e8664c6382216: -36.171307
+    f4f8aa952a470494984a61ae49227f82: -31.129898
     4102c54bd22551843b50021db2ed6315: -6.772406
   m_TransitionOverrides: {}
+--- !u!243 &2323971651314335411
+AudioMixerGroupController:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: Victory
+  m_AudioMixer: {fileID: 24100000}
+  m_GroupID: 8cbad4ed9bea7bc40aa219518542a8d4
+  m_Children: []
+  m_Volume: f4f8aa952a470494984a61ae49227f82
+  m_Pitch: d0e31f3a9273fe344a98a7f248950fbc
+  m_Send: 00000000000000000000000000000000
+  m_Effects:
+  - {fileID: 7273145552441189564}
+  m_UserColorIndex: 0
+  m_Mute: 0
+  m_Solo: 0
+  m_BypassEffects: 0
 --- !u!244 &3032967506695095839
 AudioMixerEffectController:
   m_ObjectHideFlags: 3
@@ -169,6 +195,20 @@ AudioMixerEffectController:
   m_EffectID: ad486a8c7ec7e0342b904add705799fc
   m_EffectName: Attenuation
   m_MixLevel: 81e9c213713be8e44a5236ff63bbcac8
+  m_Parameters: []
+  m_SendTarget: {fileID: 0}
+  m_EnableWetMix: 0
+  m_Bypass: 0
+--- !u!244 &7273145552441189564
+AudioMixerEffectController:
+  m_ObjectHideFlags: 3
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: 
+  m_EffectID: d53232e3995c3c8438bbe0a622198d25
+  m_EffectName: Attenuation
+  m_MixLevel: 8fd4b3c8b16699e4bb0c64556bf87b55
   m_Parameters: []
   m_SendTarget: {fileID: 0}
   m_EnableWetMix: 0

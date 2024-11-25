@@ -4,6 +4,15 @@ using UnityEngine.SceneManagement;
 using UnityEngine.Audio;
 using System.Collections;
 
+[System.Serializable]
+public class AudioMixerParameter
+{
+    public AudioMixer audioMixer;          // The AudioMixer asset
+    public string exposedParameter;        // The name of the exposed parameter in the AudioMixer
+    [HideInInspector]
+    public float initialValue;             // The initial value of the parameter
+}
+
 public class Health : MonoBehaviour
 {
     public int maxHealth = 5; // Total health points 
@@ -23,10 +32,9 @@ public class Health : MonoBehaviour
     public AudioSource hitAudioSource; // Assign an audio clip for "hit" sound in the Inspector
     public AudioSource deathAudioSource; // Assign an audio clip for "death" sound in the Inspector
 
-    // Audio mixer groups
-    [Header("Audio Mixer Group Settings")]
-    public AudioMixerGroup[] audioMixerGroups; // Drag AudioMixerGroups here
-    public float[] targetVolumes; // Corresponding target volumes in decibels
+    // Audio mixer parameters
+    [Header("Audio Mixer Parameter Settings")]
+    public AudioMixerParameter[] audioMixerParameters; // List of AudioMixer parameters to manage
 
     // Health bar related
     [Header("Health Bar Settings")]
@@ -56,6 +64,21 @@ public class Health : MonoBehaviour
 
         // Initialize Health Bar
         InitializeHealthBar();
+
+        // Store initial AudioMixer parameter values
+        if (audioMixerParameters != null)
+        {
+            foreach (var param in audioMixerParameters)
+            {
+                if (param.audioMixer != null && !string.IsNullOrEmpty(param.exposedParameter))
+                {
+                    float value;
+                    param.audioMixer.GetFloat(param.exposedParameter, out value);
+                    param.initialValue = value;
+                    Debug.Log($"Stored initial value for {param.exposedParameter}: {value}");
+                }
+            }
+        }
     }
 
     void Update()
@@ -276,16 +299,15 @@ public class Health : MonoBehaviour
         // Reset time scale
         Time.timeScale = 1f;
 
-        // Restore volumes for all specified audio mixer groups
-        if (audioMixerGroups != null && targetVolumes != null)
+        // Restore initial values for all specified audio mixer parameters
+        if (audioMixerParameters != null)
         {
-            for (int i = 0; i < audioMixerGroups.Length && i < targetVolumes.Length; i++)
+            foreach (var param in audioMixerParameters)
             {
-                if (audioMixerGroups[i] != null)
+                if (param.audioMixer != null && !string.IsNullOrEmpty(param.exposedParameter))
                 {
-                    string exposedParam = audioMixerGroups[i].audioMixer.name;
-                    audioMixerGroups[i].audioMixer.SetFloat(exposedParam, targetVolumes[i]);
-                    Debug.Log($"Restored volume for {exposedParam} to {targetVolumes[i]} dB.");
+                    param.audioMixer.SetFloat(param.exposedParameter, param.initialValue);
+                    Debug.Log($"Restored {param.exposedParameter} to {param.initialValue} dB.");
                 }
             }
         }
