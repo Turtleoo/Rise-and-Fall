@@ -13,7 +13,7 @@ public class Lever : MonoBehaviour
     public Transform platform;
     public float platformMoveSpeed = 5f;
     public float moveDuration = 2f;
-    public float platformMoveDistance = 10f; // New separate field for platform move distance
+    public float platformMoveDistance = 10f;
 
     [Header("Object Movement Settings")]
     public Transform objectToMove;
@@ -32,7 +32,8 @@ public class Lever : MonoBehaviour
     private static bool isLeverActive = false; // Static variable
     private float moveTimer = 0f;
     private bool hasPlayedPlatformAudio = false;
-    private bool leverInteracted = false; // New field to track lever interaction
+    private bool leverInteracted = false; // Tracks if the lever has been used
+    private bool isObjectMoving = false; // Tracks if the object is currently moving
 
     private Vector3 platformStartPosition;
     private Vector3 platformTargetPosition;
@@ -57,15 +58,15 @@ public class Lever : MonoBehaviour
         if (platform != null)
         {
             platformStartPosition = platform.position;
-            platformTargetPosition = platformStartPosition + new Vector3(platformMoveDistance, 0, 0); // Use new platformMoveDistance field
+            platformTargetPosition = platformStartPosition + new Vector3(platformMoveDistance, 0, 0);
         }
 
         if (objectToMove != null)
         {
             objectStartPosition = objectToMove.position;
+            objectTargetPosition = objectStartPosition + new Vector3(0, moveDistance, 0);
         }
 
-        // Ensure platform and object are in their initial positions
         ResetPositions();
     }
 
@@ -82,7 +83,6 @@ public class Lever : MonoBehaviour
 
             if (platform != null)
             {
-                // Move platform incrementally
                 Vector3 targetPosition = isLeverActive ? platformTargetPosition : platformStartPosition;
                 platform.position = Vector3.MoveTowards(platform.position, targetPosition, platformMoveSpeed * Time.deltaTime);
             }
@@ -107,7 +107,28 @@ public class Lever : MonoBehaviour
         if (objectToMove != null)
         {
             Vector3 targetPosition = isLeverActive ? objectTargetPosition : objectStartPosition;
-            objectToMove.position = Vector3.MoveTowards(objectToMove.position, targetPosition, objectMoveSpeed * Time.deltaTime);
+            if (Vector3.Distance(objectToMove.position, targetPosition) > 0.01f)
+            {
+                objectToMove.position = Vector3.MoveTowards(objectToMove.position, targetPosition, objectMoveSpeed * Time.deltaTime);
+                if (!isObjectMoving)
+                {
+                    // Start playing object move audio
+                    if (objectMoveAudioSource != null && !objectMoveAudioSource.isPlaying)
+                    {
+                        objectMoveAudioSource.Play();
+                    }
+                    isObjectMoving = true;
+                }
+            }
+            else
+            {
+                // Stop playing object move audio
+                if (isObjectMoving && objectMoveAudioSource != null && objectMoveAudioSource.isPlaying)
+                {
+                    objectMoveAudioSource.Stop();
+                }
+                isObjectMoving = false;
+            }
         }
     }
 
@@ -138,7 +159,7 @@ public class Lever : MonoBehaviour
     private void ToggleLever()
     {
         isLeverActive = !isLeverActive;
-        leverInteracted = true; // Mark that the lever has been interacted with
+        leverInteracted = true;
 
         if (leverFlickAudioSource != null)
         {
@@ -152,11 +173,6 @@ public class Lever : MonoBehaviour
             leverAnimator.SetBool("IsActive", isLeverActive);
         }
 
-        if (objectToMove != null)
-        {
-            objectTargetPosition = objectStartPosition + new Vector3(0, moveDistance, 0);
-        }
-
         if (prompt != null)
         {
             prompt.SetActive(false);
@@ -165,7 +181,6 @@ public class Lever : MonoBehaviour
 
     private void ResetPositions()
     {
-        // Reset platform and object to their initial positions
         if (platform != null)
         {
             platform.position = platformStartPosition;
