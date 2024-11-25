@@ -11,9 +11,6 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/HomeScreen.unity
     guid: 73ac5ef6b86e2344987318c676516feb
-  - enabled: 0
-    path: Assets/Scenes/GamePlaceHolder.unity
-    guid: de7a97b0d1e8c3d44ac0f7e08b146a33
   - enabled: 1
     path: Assets/Scenes/EasyMode.unity
     guid: e23fce28726469542a40e2d47b2cf303

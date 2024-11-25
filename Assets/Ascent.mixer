@@ -105,6 +105,8 @@ AudioMixerController:
     name: Bats
   - guid: 964ce363af1cb8045b8e8664c6382216
     name: Escape
+  - guid: 296ec67ad8f89204dbb4d13ef7c71c70
+    name: MyExposedParam
   m_AudioMixerGroupViews:
   - guids:
     - e51d2cec60d5b984ca7e704b750829cf
