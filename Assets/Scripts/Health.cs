@@ -111,7 +111,7 @@ public class Health : MonoBehaviour
         // Create a parent GameObject for the health bar
         GameObject healthBarParent = new GameObject("HealthBar");
         healthBarParent.transform.SetParent(cameraTransform);
-        healthBarParent.transform.localPosition = new Vector3(-8.25f, 4.25f, 0); // Adjust as needed
+        healthBarParent.transform.localPosition = new Vector3(-6.25f, 4.25f, 0); // Adjust as needed
         healthBarParent.transform.localRotation = Quaternion.identity;
         healthBarParent.transform.localScale = Vector3.one;
 
