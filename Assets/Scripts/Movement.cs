@@ -1,5 +1,6 @@
 using System.Linq;
 using UnityEngine;
+using System.Collections;
 
 public class Movement : MonoBehaviour
 {
@@ -153,6 +154,56 @@ public class Movement : MonoBehaviour
 
         animator.SetFloat("VerticalSpeed", rb.linearVelocity.y);
     }
+
+    public void DisableGlideTemporarily()
+    {
+        canGlide = false;
+        animator.SetBool("IsFlying", false); // Stop flying animation if gliding is disabled
+        animator.SetBool("IsFastFalling", false); // Stop fast-falling animation if gliding is disabled
+        Debug.Log("Glide temporarily disabled.");
+    }
+
+    private IEnumerator ReEnableGlideAfterAnimation(string animationName)
+    {
+        if (animator != null)
+        {
+            // Wait for the specified animation to finish
+            AnimatorStateInfo stateInfo = animator.GetCurrentAnimatorStateInfo(0);
+            while (stateInfo.IsName(animationName) && stateInfo.normalizedTime < 1.0f)
+            {
+                yield return null; // Wait for the next frame
+                stateInfo = animator.GetCurrentAnimatorStateInfo(0);
+            }
+
+            // Re-enable gliding
+            canGlide = true;
+            Debug.Log("Glide re-enabled after animation.");
+        }
+    }
+
+    public void HandleHit()
+    {
+        if (animator != null)
+        {
+            DisableGlideTemporarily();
+            animator.SetTrigger("Hit"); // Play hit animation
+            StartCoroutine(ReEnableGlideAfterAnimation("Hit")); // Re-enable gliding after the hit animation
+        }
+    }
+
+    public void HandleDeath()
+    {
+        if (animator != null)
+        {
+            DisableGlideTemporarily();
+            animator.SetTrigger("Die"); // Play death animation
+            StartCoroutine(ReEnableGlideAfterAnimation("Die")); // Re-enable gliding after the death animation
+        }
+
+        // Additional death logic can go here
+        Debug.Log("Player has died.");
+    }
+
 
     void HandleLadderMovement()
     {
