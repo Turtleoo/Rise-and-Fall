@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using UnityEngine.Audio;
 using System.Collections;
 
 public class Health : MonoBehaviour
@@ -21,6 +22,11 @@ public class Health : MonoBehaviour
     // Audio sources
     public AudioSource hitAudioSource; // Assign an audio clip for "hit" sound in the Inspector
     public AudioSource deathAudioSource; // Assign an audio clip for "death" sound in the Inspector
+
+    // Audio mixer groups
+    [Header("Audio Mixer Group Settings")]
+    public AudioMixerGroup[] audioMixerGroups; // Drag AudioMixerGroups here
+    public float[] targetVolumes; // Corresponding target volumes in decibels
 
     // Health bar related
     [Header("Health Bar Settings")]
@@ -264,22 +270,25 @@ public class Health : MonoBehaviour
         Time.timeScale = 0.00001f; // Slow the game
     }
 
-    /// Coroutine to reset the "Die" trigger in the Animator after the animation plays.
-    private IEnumerator ResetDeathTrigger()
-    {
-        yield return new WaitForSeconds(0.1f); // Wait for a short time to ensure the animation starts
-        if (animator != null)
-        {
-            animator.ResetTrigger("Die");
-            Debug.Log("Death trigger reset.");
-        }
-    }
-
     /// Resets the game by reloading the current scene.
     public void ResetGame()
     {
         // Reset time scale
         Time.timeScale = 1f;
+
+        // Restore volumes for all specified audio mixer groups
+        if (audioMixerGroups != null && targetVolumes != null)
+        {
+            for (int i = 0; i < audioMixerGroups.Length && i < targetVolumes.Length; i++)
+            {
+                if (audioMixerGroups[i] != null)
+                {
+                    string exposedParam = audioMixerGroups[i].audioMixer.name;
+                    audioMixerGroups[i].audioMixer.SetFloat(exposedParam, targetVolumes[i]);
+                    Debug.Log($"Restored volume for {exposedParam} to {targetVolumes[i]} dB.");
+                }
+            }
+        }
 
         // Reload the current scene
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
