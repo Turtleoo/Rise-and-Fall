@@ -14,6 +14,12 @@ EditorBuildSettings:
   - enabled: 0
     path: Assets/Scenes/GamePlaceHolder.unity
     guid: de7a97b0d1e8c3d44ac0f7e08b146a33
+  - enabled: 1
+    path: Assets/Scenes/EasyMode.unity
+    guid: e23fce28726469542a40e2d47b2cf303
+  - enabled: 1
+    path: Assets/Scenes/HardMode.unity
+    guid: 5f57fe29c63be7a4d9b6b52b67caa0e3
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 3590b91b4603b465dbb4216d601bff33, type: 3}
   m_UseUCBPForAssetBundles: 0
