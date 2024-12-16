@@ -8,6 +8,15 @@ public class TutorialHandler : MonoBehaviour
     public float textInterval = 2.0f; // Time interval between each prompt display
     public string playerTag = "Player"; // Tag of the player object
 
+    [Header("Lever Reference")]
+    public Lever lever; // Reference to the Lever script
+
+    [Header("Camera Pan Settings")]
+    public FollowCamera followCamera; // Reference to the FollowCamera script
+    public Transform[] cameraTargets; // Targets to pan to for each tutorial prompt
+    public int[] panPrompts; // Indices of prompts where the camera should pan
+    public float panDuration = 2f; // Duration of camera panning for each target
+
     private Transform[] tutorialPrompts; // Array of child prompts
     private bool tutorialStarted = false; // Prevents retriggering the tutorial
 
@@ -30,6 +39,22 @@ public class TutorialHandler : MonoBehaviour
         else
         {
             Debug.LogError("Tutorial panel is not assigned!");
+        }
+
+        // Ensure lever reference is assigned
+        if (lever == null)
+        {
+            Debug.LogError("Lever reference is not assigned!");
+        }
+
+        // Ensure followCamera and cameraTargets are properly set
+        if (followCamera == null)
+        {
+            Debug.LogError("FollowCamera reference is not assigned!");
+        }
+        if (cameraTargets == null || cameraTargets.Length == 0)
+        {
+            Debug.LogError("Camera targets are not assigned!");
         }
     }
 
@@ -58,16 +83,43 @@ public class TutorialHandler : MonoBehaviour
         Debug.Log("Tutorial started.");
 
         // Display each child prompt in sequence
-        foreach (Transform prompt in tutorialPrompts)
+        for (int i = 0; i < tutorialPrompts.Length; i++)
         {
-            prompt.gameObject.SetActive(true); // Show the current prompt
-            Debug.Log($"Displaying prompt: {prompt.name}");
+            // Check if the current prompt requires camera panning
+            if (System.Array.Exists(panPrompts, index => index == i))
+            {
+                int targetIndex = System.Array.IndexOf(panPrompts, i);
+                if (targetIndex >= 0 && targetIndex < cameraTargets.Length && followCamera != null)
+                {
+                    yield return StartCoroutine(PanToTarget(cameraTargets[targetIndex]));
+                }
+            }
+
+            tutorialPrompts[i].gameObject.SetActive(true); // Show the current prompt
+            Debug.Log($"Displaying prompt: {tutorialPrompts[i].name}");
             yield return new WaitForSeconds(textInterval); // Wait for the interval
-            prompt.gameObject.SetActive(false); // Hide the current prompt
+            tutorialPrompts[i].gameObject.SetActive(false); // Hide the current prompt
         }
 
         // Deactivate the tutorial panel after the sequence
         tutorialPanel.SetActive(false);
         Debug.Log("Tutorial ended.");
+
+        // Notify the lever that the tutorial is complete
+        if (lever != null)
+        {
+            lever.CompleteTutorial();
+            Debug.Log("Lever unlocked.");
+        }
+    }
+
+    private IEnumerator PanToTarget(Transform target)
+    {
+        if (followCamera != null && target != null)
+        {
+            // Temporarily pan the camera to the target
+            followCamera.StartCameraPanToTarget(target.position, panDuration);
+            yield return new WaitForSeconds(panDuration + followCamera.focusDuration); // Wait for pan and focus duration
+        }
     }
 }

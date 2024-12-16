@@ -311,18 +311,18 @@ PolygonCollider2D:
     m_Paths:
     - - {x: 0.255, y: -0.065}
       - {x: 0.33499998, y: 0.035}
-      - {x: 0.355, y: 0.305}
-      - {x: 0.415, y: 0.36499998}
-      - {x: 0.45499998, y: 0.555}
-      - {x: 0.45499998, y: 0.635}
-      - {x: 0.375, y: 0.66499996}
-      - {x: 0.195, y: 0.675}
-      - {x: -0.195, y: 0.675}
-      - {x: -0.445, y: 0.645}
-      - {x: -0.45499998, y: 0.615}
-      - {x: -0.45499998, y: 0.475}
-      - {x: -0.405, y: 0.315}
-      - {x: -0.325, y: 0.24499999}
+      - {x: 0.26245824, y: 0.0646157}
+      - {x: 0.2258923, y: 0.1464688}
+      - {x: 0.259394, y: 0.12672037}
+      - {x: 0.22428794, y: 0.15423304}
+      - {x: 0.25272104, y: 0.16212416}
+      - {x: 0.17085852, y: 0.15599012}
+      - {x: 0.14298052, y: 0.16145337}
+      - {x: 0.041852415, y: 0.13145334}
+      - {x: -0.08080754, y: 0.014040887}
+      - {x: -0.20553797, y: 0.08164385}
+      - {x: -0.21991527, y: 0.080078974}
+      - {x: -0.24452838, y: 0.048321903}
       - {x: -0.285, y: -0.044999998}
       - {x: -0.16499999, y: -0.114999995}
       - {x: -0.145, y: -0.355}
@@ -485,18 +485,18 @@ PolygonCollider2D:
     m_Paths:
     - - {x: 0.255, y: -0.065}
       - {x: 0.33499998, y: 0.035}
-      - {x: 0.355, y: 0.305}
-      - {x: 0.415, y: 0.36499998}
-      - {x: 0.45499998, y: 0.555}
-      - {x: 0.45499998, y: 0.635}
-      - {x: 0.375, y: 0.66499996}
-      - {x: 0.195, y: 0.675}
-      - {x: -0.195, y: 0.675}
-      - {x: -0.445, y: 0.645}
-      - {x: -0.45499998, y: 0.615}
-      - {x: -0.45499998, y: 0.475}
-      - {x: -0.405, y: 0.315}
-      - {x: -0.325, y: 0.24499999}
+      - {x: 0.3224157, y: 0.12710096}
+      - {x: 0.27162874, y: 0.07708326}
+      - {x: 0.29425028, y: 0.1757946}
+      - {x: 0.28338873, y: 0.1949333}
+      - {x: 0.26638535, y: 0.18748063}
+      - {x: 0.21020612, y: 0.15066606}
+      - {x: 0.11346558, y: 0.12023473}
+      - {x: -0.051815093, y: 0.085553765}
+      - {x: -0.19649714, y: 0.11875427}
+      - {x: -0.24646017, y: 0.1192019}
+      - {x: -0.22035493, y: 0.16284868}
+      - {x: -0.27938157, y: 0.13264318}
       - {x: -0.285, y: -0.044999998}
       - {x: -0.16499999, y: -0.114999995}
       - {x: -0.145, y: -0.355}
@@ -532,6 +532,7 @@ GameObject:
   m_Component:
   - component: {fileID: 279212523269822599}
   - component: {fileID: 6558658513408068444}
+  - component: {fileID: 4024642917763014110}
   m_Layer: 0
   m_Name: FallPlatform
   m_TagString: Untagged
@@ -612,3 +613,49 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!61 &4024642917763014110
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8256615362586900009}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_CompositeOperation: 0
+  m_CompositeOrder: 0
+  m_Offset: {x: 0, y: 0.08477372}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 2.62, y: 0.72}
+    newSize: {x: 2.62, y: 0.72}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  m_Size: {x: 2.62, y: 0.5504526}
+  m_EdgeRadius: 0

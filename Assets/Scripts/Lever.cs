@@ -4,6 +4,8 @@ public class Lever : MonoBehaviour
 {
     [Header("Prompt Settings")]
     public GameObject prompt;
+    public GameObject tutorialPrompt; // Add a field for the tutorial prompt
+    public bool isTutorialCompleted = false; // Flag to check tutorial completion
 
     [Header("Gear Settings")]
     public Transform gear;
@@ -42,6 +44,8 @@ public class Lever : MonoBehaviour
 
     public static bool IsLeverActive => isLeverActive;
 
+    public bool HasLeverBeenInteracted => leverInteracted; // Public method to check lever interaction
+
     private void Awake()
     {
         // Reset static variables to initial state
@@ -53,6 +57,11 @@ public class Lever : MonoBehaviour
         if (prompt != null)
         {
             prompt.SetActive(false);
+        }
+
+        if (tutorialPrompt != null)
+        {
+            tutorialPrompt.SetActive(true); // Show the tutorial prompt at the start
         }
 
         if (platform != null)
@@ -72,7 +81,8 @@ public class Lever : MonoBehaviour
 
     private void Update()
     {
-        if (playerInRange && Input.GetKeyDown(KeyCode.E))
+        // Ensure lever interaction is disabled until tutorial is completed
+        if (playerInRange && isTutorialCompleted && Input.GetKeyDown(KeyCode.E))
         {
             ToggleLever();
         }
@@ -137,7 +147,7 @@ public class Lever : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             playerInRange = true;
-            if (prompt != null)
+            if (prompt != null && isTutorialCompleted)
             {
                 prompt.SetActive(true);
             }
@@ -189,6 +199,15 @@ public class Lever : MonoBehaviour
         if (objectToMove != null)
         {
             objectToMove.position = objectStartPosition;
+        }
+    }
+
+    public void CompleteTutorial()
+    {
+        isTutorialCompleted = true; // Mark the tutorial as completed
+        if (tutorialPrompt != null)
+        {
+            tutorialPrompt.SetActive(false); // Hide the tutorial prompt
         }
     }
 }

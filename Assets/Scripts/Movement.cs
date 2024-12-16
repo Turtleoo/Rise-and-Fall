@@ -9,7 +9,7 @@ public class Movement : MonoBehaviour
     public float jumpForce = 10f;
     public float glideFallSpeed = 2f; // Fall speed during gliding
     public float fastFallSpeed = 10f; // Fall speed during fast fall
-    private bool canJump = false;
+    private bool canJump = false; // Jump enabled at the start
     private bool canDoubleJump = false;
     private bool hasDoubleJumped = false;
     private bool canTripleJump = false;
@@ -36,6 +36,9 @@ public class Movement : MonoBehaviour
     {
         rb = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
+
+        // Enable jump at the start
+        canJump = true;
     }
 
     void Update()
@@ -52,10 +55,19 @@ public class Movement : MonoBehaviour
             HandleLadderMovement();
         }
 
-        // Reset grounded state if the player starts falling
         if (isGrounded && rb.linearVelocity.y < 0)
         {
             isGrounded = false;
+        }
+
+        // Fast-fall logic: High-priority action while airborne
+        if (Input.GetKey(KeyCode.S) && !isGrounded)
+        {
+            ActivateFastFall();
+        }
+        else
+        {
+            DeactivateFastFall();
         }
 
         // Jump logic
@@ -84,54 +96,22 @@ public class Movement : MonoBehaviour
             }
         }
 
-        // Glide logic: Always active when falling and gliding is enabled
-        if (canGlide && !isGrounded && rb.linearVelocity.y < 0)
+        // Glide logic: Only active if canGlide is true
+        if (canGlide && !isGrounded && rb.linearVelocity.y < 0 && !Input.GetKey(KeyCode.S))
         {
-            if (Input.GetKey(KeyCode.S)) // Fast-fall input
+            if (!isGliding)
             {
-                rb.linearVelocity = new Vector2(rb.linearVelocity.x, -fastFallSpeed);
+                isGliding = true;
 
-                if (!isFastFalling)
+                if (glideAudioSource != null && !glideAudioSource.isPlaying)
                 {
-                    isFastFalling = true;
-                    animator.SetBool("IsFastFalling", true);
-                }
-
-                if (isGliding)
-                {
-                    isGliding = false;
-
-                    // Stop gliding audio
-                    if (glideAudioSource != null && glideAudioSource.isPlaying)
-                    {
-                        glideAudioSource.Stop();
-                    }
-
-                    animator.SetBool("IsFlying", false);
+                    glideAudioSource.Play();
                 }
             }
-            else
-            {
-                if (!isGliding)
-                {
-                    isGliding = true;
 
-                    // Play gliding audio
-                    if (glideAudioSource != null && !glideAudioSource.isPlaying)
-                    {
-                        glideAudioSource.Play();
-                    }
-                }
+            rb.linearVelocity = new Vector2(rb.linearVelocity.x, -glideFallSpeed);
 
-                isFastFalling = false;
-                animator.SetBool("IsFastFalling", false);
-                rb.linearVelocity = new Vector2(rb.linearVelocity.x, -glideFallSpeed);
-
-                if (!animator.GetBool("IsFlying"))
-                {
-                    animator.SetBool("IsFlying", true);
-                }
-            }
+            animator.SetBool("IsFlying", true);
         }
         else
         {
@@ -139,7 +119,6 @@ public class Movement : MonoBehaviour
             {
                 isGliding = false;
 
-                // Stop gliding audio
                 if (glideAudioSource != null && glideAudioSource.isPlaying)
                 {
                     glideAudioSource.Stop();
@@ -147,63 +126,52 @@ public class Movement : MonoBehaviour
 
                 animator.SetBool("IsFlying", false);
             }
-
-            isFastFalling = false;
-            animator.SetBool("IsFastFalling", false);
         }
 
         animator.SetFloat("VerticalSpeed", rb.linearVelocity.y);
     }
 
-    public void DisableGlideTemporarily()
+    private void ActivateFastFall()
+    {
+        rb.linearVelocity = new Vector2(rb.linearVelocity.x, -fastFallSpeed);
+
+        if (!isFastFalling)
+        {
+            isFastFalling = true;
+
+            // Ensure fast-fall animation takes priority
+            animator.SetBool("IsFastFalling", true);
+
+            // Cancel jump, double-jump, or glide animations
+            animator.SetBool("IsJump", false);
+            animator.SetBool("IsDoubleJump", false);
+            animator.SetBool("IsFlying", false);
+
+            // Force the fast-fall animation to play
+            animator.Play("FastFall", -1, 0f);
+
+            // Reset jump states to allow subsequent jumps after fast-fall
+            hasDoubleJumped = false;
+            hasTripleJumped = false;
+
+            Debug.Log("Fast-fall activated, overriding animations.");
+        }
+    }
+
+    private void DeactivateFastFall()
+    {
+        if (isFastFalling)
+        {
+            isFastFalling = false;
+            animator.SetBool("IsFastFalling", false);
+        }
+    }
+
+    public void DisableGlide()
     {
         canGlide = false;
-        animator.SetBool("IsFlying", false); // Stop flying animation if gliding is disabled
-        animator.SetBool("IsFastFalling", false); // Stop fast-falling animation if gliding is disabled
-        Debug.Log("Glide temporarily disabled.");
+        animator.SetBool("IsFlying", false); // Ensure flying animation stops if gliding is disabled
     }
-
-    private IEnumerator ReEnableGlideAfterAnimation(string animationName)
-    {
-        if (animator != null)
-        {
-            // Wait for the specified animation to finish
-            AnimatorStateInfo stateInfo = animator.GetCurrentAnimatorStateInfo(0);
-            while (stateInfo.IsName(animationName) && stateInfo.normalizedTime < 1.0f)
-            {
-                yield return null; // Wait for the next frame
-                stateInfo = animator.GetCurrentAnimatorStateInfo(0);
-            }
-
-            // Re-enable gliding
-            canGlide = true;
-            Debug.Log("Glide re-enabled after animation.");
-        }
-    }
-
-    public void HandleHit()
-    {
-        if (animator != null)
-        {
-            DisableGlideTemporarily();
-            animator.SetTrigger("Hit"); // Play hit animation
-            StartCoroutine(ReEnableGlideAfterAnimation("Hit")); // Re-enable gliding after the hit animation
-        }
-    }
-
-    public void HandleDeath()
-    {
-        if (animator != null)
-        {
-            DisableGlideTemporarily();
-            animator.SetTrigger("Die"); // Play death animation
-            StartCoroutine(ReEnableGlideAfterAnimation("Die")); // Re-enable gliding after the death animation
-        }
-
-        // Additional death logic can go here
-        Debug.Log("Player has died.");
-    }
-
 
     void HandleLadderMovement()
     {
@@ -214,6 +182,16 @@ public class Movement : MonoBehaviour
 
         animator.SetFloat("speed", Mathf.Abs(horizontalInput * moveSpeed));
         animator.SetBool("IsClimbing", Mathf.Abs(verticalInput) > 0.1f);
+    }
+
+    public void DisableJump()
+    {
+        canJump = false;
+    }
+
+    public void EnableJump()
+    {
+        canJump = true;
     }
 
     void Jump()
@@ -323,13 +301,6 @@ public class Movement : MonoBehaviour
     {
         canTripleJump = true;
         tripleJumpAvailable = true;
-    }
-
-    public void DisableGlide()
-    {
-        canGlide = false;
-        animator.SetBool("IsFlying", false); // Ensure flying animation stops if gliding is disabled
-        animator.SetBool("IsFastFalling", false); // Ensure fast-falling animation stops if gliding is disabled
     }
 
     private void OnTriggerEnter2D(Collider2D other)

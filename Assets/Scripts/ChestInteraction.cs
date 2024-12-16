@@ -8,6 +8,9 @@ public class ChestInteraction : MonoBehaviour
     public GameObject prompt; // UI element to display "Press E"
     public Movement playerMovement; // Reference to the Movement script
     public GameObject escapeTutorial; // Reference to the EscapeTutorial GameObject (the parent Canvas)
+    public Transform cameraPanTarget; // Target object for camera panning
+    public float cameraPanDuration = 2f; // Duration of the camera pan
+    public float cameraReturnDuration = 2f; // Duration for the camera to return to the player
 
     [Header("Chest Interaction")]
     public Animator chestAnimator; // Animator for the chest
@@ -21,18 +24,54 @@ public class ChestInteraction : MonoBehaviour
     public string[] audioGroupsToMute; // Array of exposed parameters in the AudioMixer to mute
 
     [Header("Escape Tutorial Settings")]
-    public float textInterval = 2.0f; // Time interval between each text display
+    public float[] textIntervals; // Array of intervals for each text display
 
     [Header("Object Toggle Settings")]
     public GameObject[] objectsToDisable; // Array of objects to disable
     public GameObject[] objectsToEnable; // Array of objects to enable
 
+    [Header("Platform Settings")]
+    public Transform platform; // Reference to the platform
+    public float platformMoveSpeed = 5f; // Speed of platform movement
+    public float platformMoveDistance = -4.6f; // Distance to move the platform
+    public float platformMoveDelay = 2f; // Delay before moving the platform
+    public float platformMoveDuration = 2f; // Duration to move the platform
+    public AudioSource platformMoveAudio; // AudioSource for platform movement
+
+    [Header("Gear Settings")]
+    public Transform gear; // Reference to the gear
+    public float gearRotationSpeed = 180f; // Speed of gear rotation
+    public float gearRotationDuration = 2f; // Duration of gear rotation
+    public float gearRotationDelay = 2f; // Delay before rotating the gear
+    public AudioSource gearRotationAudio; // AudioSource for gear rotation
+
+    [Header("Player Settings")]
+    public float newFastFallSpeed = 15f; // New fast fall speed to apply when the chest is opened
+
+    [Header("Key Object Settings")]
+    public Transform keyObject; // Reference to the key object
+    public float keyMoveSpeed = 2f; // Speed of the key's upward movement
+    public float keyMoveDuration = 2f; // Duration the key moves upwards
+    public float keyHideDelay = 1f; // Delay before the key is hidden or destroyed after movement
+
     private bool playerInRange = false;
     private bool chestOpened = false; // Tracks whether the chest has already been opened
+    private Vector3 platformStartPosition; // Original position of the platform
+    private Vector3 platformTargetPosition; // Target position of the platform
     private Transform[] tutorialTexts; // Array to store child text prompts
+    private Camera mainCamera;
 
     void Start()
     {
+        mainCamera = Camera.main;
+
+        // Initialize platform positions
+        if (platform != null)
+        {
+            platformStartPosition = platform.position;
+            platformTargetPosition = platformStartPosition + new Vector3(platformMoveDistance, 0, 0);
+        }
+
         // Hide the prompt initially
         if (prompt != null) prompt.SetActive(false);
 
@@ -59,6 +98,11 @@ public class ChestInteraction : MonoBehaviour
 
             Debug.Log("Player entered the chest's interaction range.");
         }
+    }
+
+    public bool IsChestOpened()
+    {
+        return chestOpened;
     }
 
     void OnTriggerExit2D(Collider2D other)
@@ -92,134 +136,153 @@ public class ChestInteraction : MonoBehaviour
                 chestOpenSound.Play();
                 Debug.Log("Chest opening sound played.");
             }
-            else
-            {
-                Debug.LogError("Chest open sound AudioSource is not assigned!");
-            }
 
             // Trigger the chest opening animation
             if (chestAnimator != null)
             {
                 chestAnimator.SetBool("IsOpen", true);
-                Debug.Log("Chest animation triggered! Animator 'IsOpen' set to true.");
+                Debug.Log("Chest animation triggered!");
             }
-            else
+
+            // Disable gliding and update fast fall speed
+            if (playerMovement != null)
             {
-                Debug.LogError("Chest Animator is not assigned!");
+                playerMovement.DisableGlide();
+                playerMovement.fastFallSpeed = newFastFallSpeed;
             }
 
             // Disable and enable specified objects
             ToggleGameObjects();
 
-            // Start the escape sequence tutorial
-            StartCoroutine(PlayEscapeTutorial());
+            // Start delayed platform and gear actions
+            StartCoroutine(DelayedPlatformMovement());
+            StartCoroutine(DelayedGearRotation());
+
+            // Start key object movement and play escape tutorial afterward
+            if (keyObject != null)
+            {
+                StartCoroutine(KeyObjectMovementThenTutorial());
+            }
         }
     }
 
-    /// Toggles the specified game objects
     private void ToggleGameObjects()
     {
-        // Disable specified objects
         foreach (GameObject obj in objectsToDisable)
         {
-            if (obj != null)
-            {
-                obj.SetActive(false);
-                Debug.Log($"Disabled object: {obj.name}");
-            }
+            if (obj != null) obj.SetActive(false);
         }
-
-        // Enable specified objects
         foreach (GameObject obj in objectsToEnable)
         {
-            if (obj != null)
-            {
-                obj.SetActive(true);
-                Debug.Log($"Enabled object: {obj.name}");
-            }
+            if (obj != null) obj.SetActive(true);
+        }
+    }
+
+    IEnumerator KeyObjectMovementThenTutorial()
+    {
+        float elapsedTime = 0f;
+
+        // Move the key object upwards
+        while (elapsedTime < keyMoveDuration)
+        {
+            keyObject.position += new Vector3(0, keyMoveSpeed * Time.deltaTime, 0);
+            elapsedTime += Time.deltaTime;
+            yield return null;
+        }
+
+        // Wait before hiding or destroying the key
+        yield return new WaitForSeconds(keyHideDelay);
+        Destroy(keyObject.gameObject);
+
+        // After the key is destroyed, play the escape tutorial
+        yield return StartCoroutine(PlayEscapeTutorial());
+    }
+
+    IEnumerator DelayedPlatformMovement()
+    {
+        yield return new WaitForSeconds(platformMoveDelay);
+
+        float elapsedTime = 0f;
+        while (elapsedTime < platformMoveDuration)
+        {
+            platform.position = Vector3.MoveTowards(platform.position, platformTargetPosition, platformMoveSpeed * Time.deltaTime);
+            elapsedTime += Time.deltaTime;
+            yield return null;
+        }
+
+        if (platformMoveAudio != null)
+        {
+            platformMoveAudio.Play();
+        }
+    }
+
+    IEnumerator DelayedGearRotation()
+    {
+        yield return new WaitForSeconds(gearRotationDelay);
+
+        float timer = gearRotationDuration;
+        while (timer > 0)
+        {
+            gear.Rotate(0, 0, gearRotationSpeed * Time.deltaTime);
+            timer -= Time.deltaTime;
+            yield return null;
+        }
+
+        if (gearRotationAudio != null)
+        {
+            gearRotationAudio.Play();
         }
     }
 
     IEnumerator PlayEscapeTutorial()
     {
-        // Activate the EscapeTutorial parent GameObject
         if (escapeTutorial != null)
         {
             escapeTutorial.SetActive(true);
-            Debug.Log("Escape tutorial started.");
         }
 
-        // Iterate through all tutorial texts
-        foreach (Transform text in tutorialTexts)
+        for (int i = 0; i < tutorialTexts.Length; i++)
         {
-            if (text != escapeTutorial.transform) // Skip the parent itself
+            if (i < textIntervals.Length && tutorialTexts[i] != escapeTutorial.transform)
             {
-                text.gameObject.SetActive(true); // Show the text
-                Debug.Log($"Displaying tutorial text: {text.name}");
-                yield return new WaitForSeconds(textInterval); // Wait for the interval
-                text.gameObject.SetActive(false); // Hide the text
+                if (i == 3)
+                {
+                    yield return StartCoroutine(TriggerCameraPan());
+                }
+
+                tutorialTexts[i].gameObject.SetActive(true);
+                yield return new WaitForSeconds(textIntervals[i]);
+                tutorialTexts[i].gameObject.SetActive(false);
             }
         }
 
-        // Deactivate the EscapeTutorial parent after displaying all texts
         if (escapeTutorial != null)
         {
             escapeTutorial.SetActive(false);
-            Debug.Log("Escape tutorial ended.");
         }
 
-        // Unlock the player's ability to jump
-        if (playerMovement != null)
-        {
-            playerMovement.UnlockJump(); // Unlock the ability to jump
-            playerMovement.DisableGlide(); // Disable gliding functionality
-            Debug.Log("Player jump unlocked and gliding disabled.");
-        }
-
-        // Trigger the barrel animation
         if (barrelAnimator != null)
         {
             barrelAnimator.SetTrigger("PlayBarrelAnimation");
-            Debug.Log("Barrel animation triggered.");
         }
-        else
-        {
-            Debug.LogError("Barrel Animator is not assigned!");
-        }
-
-        // Wait for a brief moment to ensure the animation starts
-        yield return new WaitForSeconds(0.5f);
-
-        // Play the music after the barrel breaks
         if (barrelBreakMusic != null)
         {
             barrelBreakMusic.Play();
-            Debug.Log("Barrel break music played.");
         }
-        else
-        {
-            Debug.LogError("Barrel break music AudioSource is not assigned!");
-        }
-
-        // Play additional music
         if (additionalMusic != null)
         {
             additionalMusic.Play();
-            Debug.Log("Additional music played.");
         }
-        else
-        {
-            Debug.LogError("Additional music AudioSource is not assigned!");
-        }
+    }
 
-        // Mute specified audio groups
-        if (audioMixer != null && audioGroupsToMute.Length > 0)
+    private IEnumerator TriggerCameraPan()
+    {
+        var followCamera = Camera.main.GetComponent<FollowCamera>();
+        if (followCamera != null)
         {
-            foreach (string group in audioGroupsToMute)
-            {
-                audioMixer.SetFloat(group, -80f); // Set the volume to a very low level (effectively mute)
-                Debug.Log($"Muted audio group: {group}");
-            }
+            followCamera.StartCameraPanToTarget(cameraPanTarget.position, cameraPanDuration);
+            float panDuration = followCamera.focusDuration + followCamera.panSpeed * 2;
+            yield return new WaitForSeconds(panDuration);
         }
     }
 }
