@@ -22,6 +22,8 @@ public class Health : MonoBehaviour
     private float invulnerabilityDuration = 1f; // Duration of invulnerability
     private float invulnerabilityTimer;
 
+    private bool isCompletelyInvincible = false; // Tracks invincibility for TakeDamage bypass
+
     public GameObject loseMessage; // UI element to display "You Lose!"
     public Button resetButton;     // UI button to reset the game
 
@@ -136,6 +138,12 @@ public class Health : MonoBehaviour
     /// Reduces the player's health by the specified amount.
     public void TakeDamage(int amount)
     {
+        if (isCompletelyInvincible)
+        {
+            Debug.Log("Player is completely invincible and did not take damage");
+            return; // Bypass damage completely
+        }
+
         if (isInvulnerable)
         {
             Debug.Log("Player is invulnerable and did not take damage");
@@ -172,6 +180,14 @@ public class Health : MonoBehaviour
             Debug.Log("Player is now invulnerable for " + invulnerabilityDuration + " seconds");
         }
     }
+
+    // This allows toggling the invincibility state externally
+    public void SetInvincibility(bool state)
+    {
+        isCompletelyInvincible = state;
+        Debug.Log("Player invincibility set to: " + state);
+    }
+
 
     /// Updates the health bar visuals based on current health.
     void UpdateHealthBar()
